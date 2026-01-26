@@ -155,7 +155,9 @@ Edit `/etc/apt/sources.list.d/debian.sources` and uncomment the backports sectio
 ## 9. Update System
 
 ```bash
-sudo apt update && sudo apt full-upgrade -y
+sudo apt update
+# use with extreme caution
+# sudo apt full-upgrade -y
 ```
 
 ---
