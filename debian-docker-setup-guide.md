@@ -9,7 +9,7 @@ Quick and simple Docker installation for MX Linux 25 with systemd.
 ### Remove Conflicts
 
 ```bash
-sudo apt remove -y docker docker-engine docker.io containerd runc docker-compose-plugin docker-buildx-plugin
+sudo apt remove -y docker docker-cli docker-engine docker.io containerd runc docker-compose-plugin docker-buildx-plugin
 sudo apt autoremove -y
 ```
 
@@ -17,7 +17,7 @@ sudo apt autoremove -y
 
 ```bash
 sudo apt update
-sudo apt install -y docker.io docker-compose docker-buildx
+sudo apt install -y docker.io docker-compose docker-buildx docker-cli
 ```
 
 ### Enable and Start
