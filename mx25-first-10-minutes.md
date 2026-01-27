@@ -11,21 +11,7 @@ A quick housekeeping guide for sysadmins. Get the annoyances out of the way, ins
 MX/Debian defaults to nano. Fix this system-wide for `visudo`, `git`, `crontab -e`, etc.
 
 ```bash
-# Add to ~/.bashrc
-cat >> ~/.bashrc << 'EOF'
-
-# Default editor
-export EDITOR=vim
-export VISUAL=vim
-export SUDO_EDITOR=vim
-EOF
-
-source ~/.bashrc
-```
-
-Verify:
-```bash
-echo $EDITOR
+sudo update-alternatives --config editor
 ```
 
 ---
