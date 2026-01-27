@@ -381,6 +381,112 @@ tail -f ~/.xsession-errors
 
 # Then attempt your RDP connection
 ```
+### Issue 6: Black Screen → Long Hang → Eventually Logs In (or Disconnects)
+
+**Environment Pattern Observed**
+
+- XFCE starts  
+- Repeated Xsession starts on `DISPLAY=:10.0`  
+- Errors referencing:  
+  `/home/bill/thinclient_drives`  
+  `Transport endpoint is not connected`
+
+This is **not** primarily CPU slowness. It is a **broken XRDP drive redirection mount (FUSE)** that stalls the desktop while the file manager and GTK volume services wait on a dead mount.
+
+---
+
+### Root Cause
+
+XRDP drive redirection creates:
+
+```
+~/thinclient_drives
+```
+
+If that mount becomes invalid (disconnect, crash, network glitch), the path remains but the FUSE endpoint is dead. Desktop components (Thunar, GVFS, GTK volume monitors) block on it → black screen or extreme login delay.
+
+---
+
+### Permanent Fix (Recommended)
+
+#### 1. Stop XRDP
+
+```
+sudo systemctl stop xrdp xrdp-sesman
+```
+
+#### 2. Force-remove the broken mount
+
+```
+sudo umount -lf /home/$USER/thinclient_drives 2>/dev/null || true
+sudo rm -rf /home/$USER/thinclient_drives
+sudo mkdir -p /home/$USER/thinclient_drives
+sudo chown $USER:$USER /home/$USER/thinclient_drives
+```
+
+#### 3. Disable XRDP Drive Redirection
+
+Prevents the mount from being recreated.
+
+```
+sudo cp -a /etc/xrdp/xrdp.ini /etc/xrdp/xrdp.ini.bak.$(date +%F-%H%M%S)
+sudo sed -i 's/^[[:space:]]*drives[[:space:]]*=.*/drives=false/' /etc/xrdp/xrdp.ini
+```
+
+#### 4. Restart XRDP
+
+```
+sudo systemctl restart xrdp xrdp-sesman
+```
+
+---
+
+### Result
+
+- No more `thinclient_drives` mount  
+- XFCE session loads immediately  
+- Black screen hang eliminated  
+- Session stability improves dramatically  
+
+---
+
+### When to Suspect This Issue
+
+| Symptom | Strong Indicator |
+|--------|------------------|
+| Black screen before desktop | Yes |
+| Login takes 30–120+ seconds | Yes |
+| Intermittent disconnects | Yes |
+| Log shows `Transport endpoint is not connected` | Definitive |
+| Only happens over XRDP | Yes |
+
+---
+
+### Performance Note (Secondary)
+
+On slow hardware, XRDP startup can be delayed, **but it should never hang**. True performance issues look like:
+
+- Gradual desktop draw  
+- Sluggish UI  
+- High CPU usage  
+
+They do **not** produce FUSE transport errors.
+
+If performance tuning is needed, see **Issue 5: Slow Performance / Lag**.
+
+---
+
+### Living Document Note
+
+If XRDP drive redirection is required in the future:
+
+- Expect occasional session corruption  
+- First diagnostic step: check `~/thinclient_drives`  
+- Quick recovery: force unmount + XRDP restart  
+
+---
+
+Add this under Troubleshooting. This is a high-impact, real-world failure mode.
 
 ---
 
