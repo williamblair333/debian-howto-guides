@@ -5,7 +5,7 @@
 ### Install Remmina with RDP Support
 ```bash
 sudo apt update
-sudo apt install remmina remmina-plugin-rdp
+sudo apt install --yes remmina remmina-plugin-rdp
 ```
 
 ### Launch Remmina
