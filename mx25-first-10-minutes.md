@@ -35,7 +35,7 @@ sudo chmod 440 /etc/sudoers.d/disable-lecture
 
 For your user only:
 ```bash
-sudo visudo -f /etc/sudoers.d/nopasswd-$USER
+sudo visudo
 ```
 
 Add:
