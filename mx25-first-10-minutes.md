@@ -169,7 +169,7 @@ One command to install the RHCSA-aligned essentials:
 ```bash
 sudo apt install -y \
   vim tmux screen bash-completion \
-  tree ncdu mc netstat \
+  tree ncdu mc \
   htop iotop lsof strace \
   jq \
   curl wget \
