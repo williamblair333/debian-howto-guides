@@ -1,180 +1,172 @@
-# Debian / MX Linux KDE — Dolphin SFTP Remote Access Guide
+# Debian / MX Linux KDE — Dolphin SFTP Remote Access & “Invalid protocol” Fix Guide
+
+---
 
 ## Overview
 
-This document explains how to configure a Debian-based KDE system so **Dolphin File Manager** can access a remote Linux machine using **SFTP (SSH File Transfer Protocol)**. It focuses on KDE I/O integration, protocol handling, and resolving “invalid protocol” and silent connection failures.
+This guide provides a complete, structured procedure for enabling **Dolphin File Manager** to access remote systems over **SFTP (SSH File Transfer Protocol)** and resolving the common:
+
+> **“Invalid protocol”**
+
+error — even when SSH/SFTP works from the command line.
+
+Applies to:
+
+- Debian-based systems  
+- MX Linux  
+- KDE applications running inside **Plasma** or **XFCE**
 
 ---
 
-## Requirements
+## Architecture Background
 
-- Debian, MX Linux, or similar Debian-based distribution  
-- KDE desktop environment  
-- Remote system running `sshd`  
-- Valid user credentials or SSH key authentication  
-- Network reachability to the remote host  
+| Layer | Role | Must Work |
+|------|------|-----------|
+| SSH daemon | Remote file transport | ✔ |
+| CLI `sftp` | Protocol baseline test | ✔ |
+| KIO SFTP worker | KDE network filesystem layer | ✔ |
+| Dolphin UI | Frontend only | Optional failure point |
+
+If CLI SFTP works but Dolphin fails → **UI / KIO cache issue**, not network.
 
 ---
 
-## Step 1 — Install Required KDE I/O Packages
-
-Dolphin relies on KDE KIO workers for remote filesystems.
+## Step 1 — Install Required KDE Components
 
 ```bash
 sudo apt update
-sudo apt install --yes kio-extras kio-fuse
+sudo apt install --yes kio-extras kio-fuse kde-cli-tools
 ```
 
-**kio-extras** provides SFTP support. Without it, Dolphin reports **invalid protocol**.
+**Purpose**
+
+| Package | Function |
+|---------|----------|
+| kio-extras | Provides SFTP protocol worker |
+| kio-fuse | Allows mounting KIO paths |
+| kde-cli-tools | Provides kioclient (diagnostics) |
 
 ---
 
-## Step 2 — Restart KDE I/O Services
+## Step 2 — Verify KDE Can Handle SFTP (Backend Test)
 
-After installation, restart the KDE background daemon:
+This bypasses Dolphin.
 
 ```bash
-kquitapp5 kded5 2>/dev/null || true
-kded5 &
+kioclient ls "sftp://USERNAME@SERVER_IP/"
 ```
 
-Or log out and log back in.
+If directories list → KDE supports SFTP correctly.
 
 ---
 
-## Step 3 — Verify SFTP Protocol Registration
-
-Confirm KDE recognizes the protocol:
+## Step 3 — Baseline CLI Test
 
 ```bash
-( command -v kioclient6 >/dev/null && kioclient6 --list || kioclient5 --list ) | grep -i sftp || echo "SFTP_HANDLER_MISSING"
+sftp USERNAME@SERVER_IP
 ```
 
-If missing → `kio-extras` did not install correctly.
+If this fails → SSH/server problem. Stop here.
 
 ---
 
-## Step 4 — Connect Using Dolphin (Correct Method)
+## Step 4 — Fix “Invalid protocol” in Dolphin (Critical Step)
 
-**Do not run SFTP URLs in the terminal.**
+This resolves stale KDE service caches and broken Dolphin configs.
 
-In Dolphin:
+```bash
+kquitapp5 dolphin 2>/dev/null || true
+rm -f "$HOME/.config/dolphinrc"
+rm -rf "$HOME/.cache/ksycoca"* "$HOME/.cache/kioexec"
+kbuildsycoca5
+dolphin
+```
 
-1. Press **Ctrl + L** (opens location bar)  
-2. Enter:
+**Why this works**
+
+| File | Problem |
+|------|---------|
+| dolphinrc | Corrupted protocol/UI state |
+| ksycoca cache | Stale KDE service database |
+| kioexec cache | Old worker mappings |
+
+XFCE sessions are especially prone because KDE daemons are not fully session-managed.
+
+---
+
+## Step 5 — Connect Correctly in Dolphin
+
+Open Dolphin → Press **Ctrl + L**
 
 ```
-sftp://username@SERVER_IP/
+sftp://USERNAME@SERVER_IP/
 ```
 
 Example:
 
 ```
-sftp://bill@192.168.50.22/
+sftp://bill@100.118.143.57/
 ```
-
-Press **Enter**.
-
----
-
-## Step 5 — Backend Verification (Bypass Dolphin UI)
-
-Test KDE's SFTP worker directly:
-
-```bash
-( command -v kioclient6 >/dev/null && kioclient6 exec "sftp://username@SERVER_IP/" || kioclient5 exec "sftp://username@SERVER_IP/" )
-```
-
-If this works but Dolphin UI fails → UI issue, not network or SSH.
 
 ---
 
 ## Step 6 — Authentication Handling
 
-Dolphin may not honor complex SSH config files. Use:
+If no password prompt appears:
 
-### Load SSH key into agent
 ```bash
 ssh-add ~/.ssh/id_ed25519
-```
-
-### Verify key loaded
-```bash
 ssh-add -l
 ```
 
-If using passwords, ensure KWallet is unlocked.
+KIO relies on the SSH agent.
 
 ---
 
-## Step 7 — Clear KDE Caches (Protocol Errors)
+## Troubleshooting Matrix
+
+| Symptom | Meaning | Fix |
+|---------|--------|-----|
+| CLI works, kioclient works, Dolphin fails | UI/config corruption | Step 4 |
+| “Invalid protocol” | KIO cache issue | Step 4 |
+| kioclient fails | Missing kio-extras | Step 1 |
+| CLI fails | SSH/server issue | Fix SSH |
+| Immediate disconnect | Home dir permissions | `chmod 755 /home/user` |
+
+---
+
+## Verification Checklist
+
+All must succeed:
 
 ```bash
-kquitapp5 kded5 2>/dev/null || true
-rm -rf ~/.cache/kioexec ~/.cache/ksycoca*
-kbuildsycoca5
+sftp USERNAME@SERVER_IP
 ```
-
-Log out/in afterward.
-
----
-
-## Step 8 — Server-Side Permission Check
-
-Home directory must be traversable:
 
 ```bash
-chmod 755 /home/username
+kioclient ls "sftp://USERNAME@SERVER_IP/"
 ```
 
-Strict permissions can break KIO while CLI SFTP works.
+Dolphin:
+
+```
+sftp://USERNAME@SERVER_IP/
+```
 
 ---
 
-## Step 9 — Baseline CLI Test
-
-Always confirm shell SFTP works:
+## Optional Backup Before Reset
 
 ```bash
-sftp username@SERVER_IP
+cp -a "$HOME/.config/dolphinrc" "$HOME/.config/dolphinrc.bak.$(date +%Y%m%d-%H%M%S)" 2>/dev/null || true
 ```
-
-If CLI fails → SSH/server problem  
-If CLI works but Dolphin fails → KDE integration issue
-
----
-
-## Common Failure Causes
-
-| Symptom | Cause |
-|--------|------|
-| Invalid protocol | Missing `kio-extras` |
-| No password prompt | SSH key not in agent |
-| Wizard fails | Dolphin wizard bug |
-| Works in CLI only | KIO auth mismatch |
-| Immediate disconnect | Server home permissions |
-
----
-
-## Correct Usage Pattern
-
-**Always connect using address bar:**
-
-```
-sftp://username@SERVER_IP/
-```
-
-Avoid “Add Network Folder” wizard for direct SFTP connections.
 
 ---
 
 ## Summary
 
-1. Install `kio-extras`
-2. Restart KDE services
-3. Use `sftp://` in Dolphin address bar
-4. Load SSH keys into agent
-5. Use `kioclient` for backend testing
-6. Clear KDE cache if protocol errors appear
+The “Invalid protocol” error in Dolphin is **not a networking issue** when CLI SFTP works. It is almost always:
 
-When these conditions are met, Dolphin SFTP operates reliably.
+> **A stale KDE service cache or corrupted Dolphin user configuration**
+
+Resetting Dolphin config + rebuilding `ksycoca` restores proper protocol registration.
