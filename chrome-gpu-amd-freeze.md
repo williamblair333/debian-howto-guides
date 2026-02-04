@@ -1,154 +1,170 @@
-# 🚀 CHROME FREEZE FIX — MX LINUX 23 + AMD GPU  
-**Eliminate UI hangs. Stabilize rendering. Zero guesswork.**
+# 🚀 Chrome Freezing Fix — MX Linux 23 + AMD (Polaris / RX 550)
+
+> **Purpose**: eliminate Chrome UI freezes caused by the Linux AMD graphics path (ANGLE → Mesa → Polaris).  
+> **Audience**: MX Linux 23 desktop users (Debian 12 base) running Chrome on AMD GPUs who see frequent Chrome hangs/freezes.
 
 ---
 
-## 🎯 WHAT THIS DOES
-Fixes Google Chrome freezing caused by the **ANGLE → Mesa → AMD Polaris** graphics stack.
-
-**Outcome:**  
-Stable browser, no GPU lockups, no compositor deadlocks, smooth video + tabs.
-
----
-
-## 🧠 WHY CHROME FREEZES HERE
-
-Chrome on Linux uses:
-
-ANGLE layer → Mesa OpenGL → AMD Polaris driver  
-
-This path is unstable on Mesa 22.x and causes:
-- GPU context loss  
-- UI thread stalls  
-- Browser window freeze while system still runs  
-
-We bypass the broken layer.
+## ✅ Quick Index
+- [1. Primary fix: bypass ANGLE](#1-primary-fix-bypass-angle)
+- [2. Optional: disable WebGL](#2-optional-disable-webgl)
+- [3. Chrome background + preload](#3-chrome-background--preload)
+- [4. Tab discarding](#4-tab-discarding)
+- [5. Xfce compositor (only if Xfce)](#5-xfce-compositor-only-if-xfce)
+- [6. Linux swappiness = 10](#6-linux-swappiness--10)
+- [7. Ensure swap exists](#7-ensure-swap-exists)
+- [8. Verify GPU renderer](#8-verify-gpu-renderer)
+- [9. Validate in chrome://gpu](#9-validate-in-chromegpu)
 
 ---
 
-# 🛠 STEP-BY-STEP FIX
+## 1. Primary fix: bypass ANGLE
 
----
-
-## 🥇 1. FORCE STABLE RENDERING (CRITICAL FIX)
-
-**Test first**
-
+### 1.1 Test (do this first)
+```bash
 google-chrome --use-gl=desktop --disable-gpu-driver-bug-workarounds
+```
 
-If Chrome becomes stable → lock it in:
+If stability improves, persist it:
 
+### 1.2 Make permanent (system-wide desktop launcher)
+```bash
 sudo sed -i 's|Exec=.*|Exec=google-chrome --use-gl=desktop --disable-gpu-driver-bug-workarounds %U|' /usr/share/applications/google-chrome.desktop
-
-✔ Uses native Mesa OpenGL  
-❌ Bypasses unstable ANGLE layer  
+```
 
 ---
 
-## 🥈 2. DISABLE WEBGL (STOPS GPU RESET PATHS)
+## 2. Optional: disable WebGL
 
-Some sites trigger crash-prone paths.
+Use this if some sites still trigger freezes or the GPU path still misbehaves.
 
+```bash
 sudo sed -i 's|Exec=.*|Exec=google-chrome --use-gl=desktop --disable-gpu-driver-bug-workarounds --disable-webgl %U|' /usr/share/applications/google-chrome.desktop
+```
 
 ---
 
-## 🥉 3. STOP CHROME BACKGROUND RESOURCE ABUSE
+## 3. Chrome background + preload
 
-Address bar:
-
-chrome://settings/performance  
+### 3.1 Turn OFF preload
+Open:
+```text
+chrome://settings/performance
+```
 Turn OFF:
-• Preload pages
+- **Preload pages**
 
-chrome://settings/system  
+### 3.2 Stop background apps
+Open:
+```text
+chrome://settings/system
+```
 Turn OFF:
-• Continue running background apps
+- **Continue running background apps when Google Chrome is closed**
 
 ---
 
-## 4. SUSPEND UNUSED TABS
+## 4. Tab discarding
 
-chrome://discards  
-Discard heavy tabs manually.
-
----
-
-## 5. DISABLE DESKTOP COMPOSITOR (XFCE ONLY)
-
-Settings → Window Manager Tweaks → **Compositor tab**  
-Uncheck: **Enable display compositing**  
-Log out / log in.
-
-Removes Chrome ↔ compositor deadlocks.
+Open:
+```text
+chrome://discards
+```
+Use “Discard” on high-impact tabs.
 
 ---
 
-## 6. REDUCE LINUX SWAPPING (PREVENT UI STALLS)
+## 5. Xfce compositor (only if Xfce)
 
-echo 'vm.swappiness=10' | sudo tee /etc/sysctl.d/99-swappiness.conf  
+If You are on Xfce:  
+Settings → **Window Manager Tweaks** → **Compositor**  
+Disable: **Enable display compositing**  
+Log out/in.
+
+---
+
+## 6. Linux swappiness = 10
+
+```bash
+echo 'vm.swappiness=10' | sudo tee /etc/sysctl.d/99-swappiness.conf
 sudo sysctl -p /etc/sysctl.d/99-swappiness.conf
+```
+
+Verify:
+```bash
+sysctl vm.swappiness
+```
 
 ---
 
-## 7. ENSURE SWAP EXISTS (SYSTEM SAFETY)
+## 7. Ensure swap exists
 
 Check:
-
+```bash
 free -h
+```
 
-If swap = 0:
+If swap is 0 or very small, add 4G:
 
-sudo fallocate -l 4G /swapfile  
-sudo chmod 600 /swapfile  
-sudo mkswap /swapfile  
-sudo swapon /swapfile  
+```bash
+sudo fallocate -l 4G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+```
+
+Verify:
+```bash
+swapon --show
+```
 
 ---
 
-## 8. VERIFY GPU IS ACTUALLY USED
+## 8. Verify GPU renderer (must not be llvmpipe)
 
-glxinfo | grep "OpenGL renderer"
+```bash
+glxinfo | grep -i "OpenGL renderer"
+```
 
-❌ Bad:
-llvmpipe
+Bad:
+- `llvmpipe`
 
-✔ Good:
-AMD Radeon RX 550 (or similar)
+Good:
+- `AMD Radeon RX 550 ...` (or similar)
 
 ---
 
-## 9. CONFIRM STABLE GRAPHICS PATH
+## 9. Validate in chrome://gpu
 
+Open:
+```text
 chrome://gpu
+```
 
-You want:
-✔ OpenGL enabled  
-✔ No rising GPU crash count  
-✔ No “ANGLE” renderer string  
-
----
-
-# ✅ FINAL SYSTEM STATE
-
-| Layer | Status |
-|------|-------|
-| Rendering Engine | Native Mesa OpenGL |
-| ANGLE Layer | Removed |
-| WebGL Crash Path | Disabled |
-| Desktop Compositor Conflict | Removed |
-| Swap Thrash | Controlled |
-| GPU Context Loss | Eliminated |
+Check:
+- GPU crash count is not rising
+- No ANGLE renderer string (or overall stability improved)
+- No repeated context-loss behavior under normal use
 
 ---
 
-## 🧊 RESULT
+## Expected harmless log noise
 
-Chrome stable under:
-• Many tabs  
-• Video playback  
-• Long sessions  
+If You launch from terminal, these are typically non-fatal:
+- `DEPRECATED_ENDPOINT` (push/messaging endpoint changes)
+- EGL context warnings when Chrome probes backends
+- WebGL fallback warnings (especially if WebGL disabled)
 
-No freezes. No driver lockups. No UI stalls.
+---
+
+## Final state (target)
+
+| Item | Target |
+|------|--------|
+| Rendering | `--use-gl=desktop` |
+| ANGLE instability | bypassed |
+| WebGL | optional disable |
+| Swapping stalls | reduced via swappiness=10 |
+| System safety | swap present |
 
