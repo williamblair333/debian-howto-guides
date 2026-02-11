@@ -19,26 +19,7 @@ We need to tell the console login to "hold" your password and pass it to the key
 
 ---
 
-### 🛠️ Phase 3: Configure .xinitrc (The Bridge)
-Since you use `startx`, your graphical environment needs to know where the "unlocked" keyring lives. Add this to your `~/.xinitrc` **above** your `exec` line:
-
-```bash
-# Start the GNOME Keyring Daemon
-eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
-
-# Export variables so apps can find the keyring
-export GNOME_KEYRING_CONTROL
-export SSH_AUTH_SOCK
-
-# Ensure D-Bus is connected to the session
-if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
-    eval $(dbus-launch --sh-syntax --exit-with-session)
-fi
-```
-
----
-
-### 🛠️ Phase 4: Sync the Passwords
+### 🛠️ Phase 3: Sync the Passwords
 If you are still prompted, your "Login" keyring password likely doesn't match your user password.
 
 1.  Open **Passwords and Keys** (Seahorse) from your app menu.
