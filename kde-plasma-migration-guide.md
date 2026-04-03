@@ -77,20 +77,21 @@ Each tier is a superset of the one above it. **`kde-full` is the recommended sta
 ```bash
 clear
 
-sudo apt install kde-full task-kde-desktop
+sudo apt install --yes kde-full task-kde-desktop
 ```
 
 This pulls in ~1.5–2 GB of packages. Let it complete fully before proceeding.
 
 ### 3.2 Install supplementary packages not covered by metapackages
 
-These are essential for a functioning desktop but are **not** dependencies of `kde-full`:
+Even `kde-full` does not include everything needed for full hardware integration. The following single command installs all supplementary packages with correct Trixie/KF6 names:
 
 ```bash
 clear
 
-# System Tray & Hardware Integration
-sudo apt install \
+sudo apt install --yes \
+  kwin-x11 \
+  kwin-wayland \
   plasma-nm \
   plasma-pa \
   powerdevil \
@@ -100,30 +101,21 @@ sudo apt install \
   bluez-obexd \
   plasma-thunderbolt \
   plasma-disks \
-  plasma-firewall
-
-# Session & Login
-sudo apt install \
+  plasma-firewall \
   sddm \
   sddm-theme-breeze \
   sddm-theme-debian-breeze \
   kde-config-sddm \
   libpam-kwallet5 \
   libpam-kwallet-common \
-  kde-config-screenlocker
-
-# File Management Enhancements
-sudo apt install \
+  kde-config-screenlocker \
   dolphin-plugins \
   kio-extras \
   kio-gdrive \
   kio-fuse \
   ffmpegthumbs \
   kdegraphics-thumbnailers \
-  kimageformat-plugins
-
-# System Utilities
-sudo apt install \
+  kimageformat-plugins \
   konsole \
   ksystemstats \
   plasma-systemmonitor \
@@ -135,35 +127,28 @@ sudo apt install \
   sweeper \
   kmenuedit \
   kfind \
-  kdeconnect
-
-# Backend Services
-sudo apt install \
+  kdeconnect \
   upower \
-  udisks2
-
-# Extras
-sudo apt install \
+  udisks2 \
   plasma-welcome \
   plasma-discover \
   plasma-discover-backend-flatpak \
   kde-config-plymouth \
-  xdg-desktop-portal-kde
-
-# Theming
-sudo apt install \
+  xdg-desktop-portal-kde \
+  libkf6dbusaddons-bin \
   breeze \
   breeze-cursor-theme \
   breeze-icon-theme \
   breeze-gtk-theme \
-  qt6-wayland
-
-# Fonts
-sudo apt install \
+  qt6-wayland \
   fonts-noto \
   fonts-hack \
   fonts-noto-color-emoji
 ```
+
+> **Why `kwin-x11`?** Trixie's `kde-plasma-desktop` only pulls in `kwin-wayland` by default. Without `kwin-x11`, X11 sessions (including XRDP) will fail to start. Install both.
+>
+> **Why `libkf6dbusaddons-bin`?** Provides `kquitapp6` and `kstart`, needed to restart `plasmashell` without logging out.
 
 ---
 
@@ -187,7 +172,7 @@ Running two desktop environments simultaneously causes **service frontend confli
 ```bash
 clear
 
-sudo apt remove --purge \
+sudo apt remove --yes --purge \
   xfce4 \
   xfce4-* \
   thunar \
@@ -219,7 +204,7 @@ sudo apt remove --purge \
 ```bash
 clear
 
-sudo apt autoremove --purge
+sudo apt autoremove --yes --purge
 ```
 
 ### 4.4 Remove leftover autostart entries
@@ -269,7 +254,7 @@ SDDM is KDE's native display manager. Plasma themes apply to it, the Wayland/X11
 clear
 
 # Install SDDM and KDE theme
-sudo apt install sddm sddm-theme-breeze kde-config-sddm
+sudo apt install --yes sddm sddm-theme-breeze kde-config-sddm
 
 # Switch from LightDM to SDDM
 sudo dpkg-reconfigure sddm
@@ -613,12 +598,14 @@ echo "==========================================="
 
 Even after installing `kde-full`, the following required manual installation:
 
+- `kwin-x11` (not pulled in by default — only `kwin-wayland` is; required for X11/XRDP sessions)
 - `plasma-nm`, `plasma-pa`, `bluedevil` (system tray widgets)
 - `powerdevil`, `power-profiles-daemon` (power management)
 - `libpam-kwallet5` (auto-unlock KWallet at login)
 - `ffmpegthumbs`, `kdegraphics-thumbnailers`, `kimageformat-plugins` (Dolphin thumbnails)
 - `sddm`, `sddm-theme-breeze` (display manager)
 - `kdeconnect` (phone integration)
+- `libkf6dbusaddons-bin` (provides `kquitapp6` / `kstart` for plasmashell restarts)
 
 ### 10.3 Powerdevil is a systemd user service in Plasma 6
 
@@ -653,6 +640,7 @@ Log out, log back in. Plasma rebuilds a clean default panel with auto-detected h
 
 - [x] `kde-full` and `task-kde-desktop` installed
 - [x] All supplementary packages installed (system tray, power, bluetooth, file management)
+- [x] `kwin-x11` and `kwin-wayland` both installed
 - [x] XFCE fully removed (packages, autostart entries, orphaned dependencies)
 - [x] SDDM set as display manager (`/usr/bin/sddm` in `/etc/X11/default-display-manager`)
 - [x] `~/.xsession` contains `exec startplasma-x11`
@@ -776,7 +764,7 @@ balooctl6 check
 clear
 
 # Requires libkf6dbusaddons-bin
-sudo apt install libkf6dbusaddons-bin
+sudo apt install --yes libkf6dbusaddons-bin
 
 # Restart without logout
 kquitapp6 plasmashell && kstart plasmashell &
