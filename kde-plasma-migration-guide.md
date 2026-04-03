@@ -150,6 +150,9 @@ sudo apt install --yes \
 >
 > **Why `libkf6dbusaddons-bin`?** Provides `kquitapp6` and `kstart`, needed to restart `plasmashell` without logging out.
 
+> [!IMPORTANT]
+> **Complete ALL installs in Phase 1 before logging into a KDE Plasma session for the first time.** Many Plasma components (especially `kwin-x11` and `powerdevil`) are launched by systemd user services at login. If the binaries aren't present when the session starts, systemd marks the services as failed and hits its restart limit. Installing the packages later won't fix this — a full reboot is required to clear the failed state and allow a clean session startup.
+
 ---
 
 ## 4. Phase 2 — Remove XFCE
@@ -190,7 +193,8 @@ sudo apt remove --yes --purge \
   xfce4-panel \
   xfce4-session \
   xfce4-settings \
-  network-manager-gnomenm-applet \
+  nm-applet \
+  network-manager-gnome \
   blueman \
   pavucontrol \
   pasystray \
@@ -302,6 +306,7 @@ Debian Trixie ships KDE Frameworks 6 (KF6), which renamed many packages from the
 | `baloo-kf6` | `baloo6` | File search/indexing |
 | `purpose` | *(not available in Trixie)* | Share menu integration — non-essential |
 | `kde-connect` | `kdeconnect` | One word, no hyphen |
+| `nm-applet` | `network-manager-gnome` | XFCE/GNOME network tray icon (remove during migration) |
 
 ### 6.2 How to find the correct package name
 
@@ -634,6 +639,31 @@ rm -rf ~/.cache/plasmashell*
 
 Log out, log back in. Plasma rebuilds a clean default panel with auto-detected hardware widgets. Reconfigure visibility via the GUI afterward.
 
+### 10.8 kwin won't autostart if installed after first login
+
+`kwin_x11` is launched by the `plasma-workspace-x11.target` systemd user target at login via a `Wants=plasma-kwin_x11.service` directive. The service unit is `static` (no `[Install]` section) — it cannot be manually `enable`d.
+
+If `kwin-x11` is not installed when you first log into Plasma, systemd tries to start the service, fails (binary missing), and hits its restart limit. Installing the package afterward does not clear the failed state. **A full reboot is required.**
+
+```bash
+clear
+
+# Diagnose: is kwin running?
+systemctl --user status plasma-kwin_x11.service
+
+# If "inactive (dead)" or "failed", and the binary exists:
+which kwin_x11
+
+# Fix: reboot to get a clean session startup
+sudo reboot
+
+# After reboot, verify:
+systemctl --user status plasma-kwin_x11.service
+# Should show: active (running)
+```
+
+The same pattern applies to `powerdevil` (`plasma-powerdevil.service`). Always install all packages before the first KDE login.
+
 ---
 
 ## 11. Post-Migration Checklist
@@ -654,6 +684,38 @@ Log out, log back in. Plasma rebuilds a clean default panel with auto-detected h
 ---
 
 ## 12. Troubleshooting Reference
+
+<details>
+<summary><strong>kwin not running / no window decorations</strong></summary>
+
+Symptoms: no title bars, no window borders, `org.kde.KWin was not provided by any .service files` errors in journal.
+
+```bash
+clear
+
+# Is the service running?
+systemctl --user status plasma-kwin_x11.service
+
+# Is the binary installed?
+which kwin_x11
+dpkg -l | grep kwin-x11
+
+# If installed but service is dead/failed — reboot clears the failed state
+sudo reboot
+
+# If you need it running RIGHT NOW without rebooting:
+systemctl --user start plasma-kwin_x11.service
+# or
+kwin_x11 --replace &
+```
+
+If this keeps happening after reboot, check that `plasma-workspace-x11.target` is active:
+
+```bash
+systemctl --user status plasma-workspace-x11.target
+```
+
+</details>
 
 <details>
 <summary><strong>Battery widget not appearing</strong></summary>
