@@ -190,7 +190,7 @@ sudo apt remove --yes --purge \
   xfce4-panel \
   xfce4-session \
   xfce4-settings \
-  nm-applet \
+  network-manager-gnomenm-applet \
   blueman \
   pavucontrol \
   pasystray \
