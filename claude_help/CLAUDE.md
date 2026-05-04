@@ -1,0 +1,3 @@
+- Respond concisely. No summaries unless requested.
+- Don't create documentation files unless explicitly asked.
+- For simple edits, proceed without lengthy explanations.

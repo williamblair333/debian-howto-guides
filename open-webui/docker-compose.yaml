@@ -1,0 +1,36 @@
+version: '3.8'
+#-========================================================================
+
+services:
+#-========================================================================
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    ports:
+      - "3000:8080"
+    network_mode: host
+    environment:
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - AIOHTTP_CLIENT_TIMEOUT_OPENAI_MODEL_LIST=60
+      - PORT=48080
+      - OLLAMA_DISCOVERY_FORCE_RELOAD=true
+
+    volumes:
+      - ./open-webui:/app/backend/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+#-========================================================================
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    environment:
+      - Environment="OLLAMA_HOST=172.17.0.1"
+
+    network_mode: host
+    volumes:
+      - ./ollama:/root/.ollama
+    restart: unless-stopped
+#-========================================================================
