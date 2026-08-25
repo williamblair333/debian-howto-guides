@@ -318,3 +318,12 @@ To send alerts to a group instead of yourself:
 - [ ] Test message received
 
 Once complete, you can use Telegram notifications in any n8n workflow.
+
+---
+
+## Related guides in this repo
+
+- [CODEX](README.md) — scope and charter for these notes
+- [Browser Console Automation](browser-automation-guide.md) — the other integration write-up here
+
+[Back to the repository index](../README.md)

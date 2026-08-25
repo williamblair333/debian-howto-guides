@@ -272,3 +272,12 @@ sudo install -m 755 /tmp/tm /usr/local/bin/tm   # reinstall if missing
 tmux ls                    # list sessions
 tmux attach -t work        # attach by name
 ```
+
+---
+
+## Related guides in this repo
+
+- [MX 25 First 10 Minutes](mx25-first-10-minutes.md) — the broader post-install pass
+- [Linux Troubleshooting Instructions](linux-troubleshooting-guide.md) — the diagnostic method to pair with a working shell
+
+[Back to the repository index](README.md)

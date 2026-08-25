@@ -315,3 +315,12 @@ poetry add requests
 poetry install
 poetry run python -c "import requests; print('It works!')"
 ```
+
+---
+
+## Related guides in this repo
+
+- [MX 25 First 10 Minutes](mx25-first-10-minutes.md) — run this first on a fresh install
+- [Docker Setup](debian-docker-setup-guide.md) — the other way to isolate a runtime
+
+[Back to the repository index](README.md)

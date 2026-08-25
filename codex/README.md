@@ -106,3 +106,13 @@ Rationale:
 - Prevents privatization of integration knowledge  
 
 See `LICENSE` file for full terms.
+
+---
+
+## Related guides in this repo
+
+- [Browser Console Automation](browser-automation-guide.md) — the general technique
+- [SCORM Course Player Auto-Advance](scorm-auto-advance.md) — the concrete case of it
+- [Telegram Bot Integration for n8n](telegram.md) — API integration notes
+
+[Back to the repository index](../README.md)

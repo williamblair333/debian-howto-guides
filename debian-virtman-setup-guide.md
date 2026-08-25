@@ -177,3 +177,13 @@ ls -l /usr/bin/qemu-system-*
 
 **Tested on:** MX Linux 23.6 (Trixie) with systemd  
 **Last updated:** 2025-01-25
+
+---
+
+## Related guides in this repo
+
+- [Virsh Reference Guide](administer/virsh-reference-guide.md) — the CLI equivalent of everything virt-manager does
+- [Docker Setup](debian-docker-setup-guide.md) — containers where a full VM is overkill
+- [Remmina RDP Setup](debian-remmina-setup-guide.md) — connecting into the guests once they run
+
+[Back to the repository index](README.md)

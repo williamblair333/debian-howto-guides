@@ -96,3 +96,12 @@ When you've had a productive session and want to continue efficiently:
 ---
 
 *Tip: Ask Claude to remind you to summarize when conversations get long. This can be added to Claude's memory for automatic reminders.*
+
+---
+
+## Related guides in this repo
+
+- [Complete Claude Capabilities Guide](claude-complete-guide.md) — the full reference behind the checklist
+- [CLAUDE.md](CLAUDE.md) — the behavior config that enforces it
+
+[Back to the repository index](../README.md)

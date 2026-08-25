@@ -755,3 +755,12 @@ if (video) {
 
 > *"Any sufficiently boring training module is indistinguishable from a timer with extra steps."*
 > — ~~Arthur C. Clarke~~ Everybody who's sat through SCORM training
+
+---
+
+## Related guides in this repo
+
+- [SCORM Course Player Auto-Advance](scorm-auto-advance.md) — this technique applied to one real player
+- [CODEX](README.md) — scope and charter for these notes
+
+[Back to the repository index](../README.md)

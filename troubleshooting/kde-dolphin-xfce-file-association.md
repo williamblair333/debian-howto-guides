@@ -90,3 +90,10 @@ sudo apt install --yes kio kio-extras kde-cli-tools
 | MIME associations lost | Config path mismatch | Symlink mimeapps.list |
 
 ---
+
+## Related guides in this repo
+
+- [Dolphin SFTP Remote Access](../debian-kde-dolphin-xfce.md) — the other half of Dolphin under Xfce
+- [XFCE to KDE Plasma 6 Migration](../kde-plasma-migration-guide.md) — the full move that removes the mismatch
+
+[Back to the repository index](../README.md)

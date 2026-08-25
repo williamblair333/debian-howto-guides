@@ -231,3 +231,15 @@ These deserve their own dedicated howtos:
 - [MX Linux Forum](https://forum.mxlinux.org/)
 - [Debian Wiki - sudo](https://wiki.debian.org/sudo)
 - [RHCSA Objectives](https://www.redhat.com/en/services/training/ex200-red-hat-certified-system-administrator-rhcsa-exam)
+
+---
+
+## Related guides in this repo
+
+- [Python Development Environment Setup](debian-python3-setup-guide.md) — set up Python properly before the first venv
+- [Docker Setup](debian-docker-setup-guide.md) — the usual next install on a fresh box
+- [tmux Session Manager + Custom MOTD](debian-tmux-motd-setup-guide.md) — shell quality-of-life once the desktop is usable
+- [Auto-Unlock Login Keyring](multi-keyring-prompt-fix.md) — fixes the duplicate password prompt this guide leaves in place
+- [XFCE to KDE Plasma 6 Migration](kde-plasma-migration-guide.md) — if you would rather not stay on Xfce
+
+[Back to the repository index](README.md)

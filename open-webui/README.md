@@ -190,3 +190,12 @@ To update images:
 docker compose pull
   docker compose up -d
 ```
+
+---
+
+## Related guides in this repo
+
+- [Docker Setup](../debian-docker-setup-guide.md) — required before either compose file runs
+- [NVIDIA Driver Installation](../debian-nvidia-setup-guide.md) — required for the CUDA compose file
+
+[Back to the repository index](../README.md)

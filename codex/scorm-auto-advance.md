@@ -381,3 +381,12 @@ if (window.jQuery) {
   console.log('No jQuery');
 }
 ```
+
+---
+
+## Related guides in this repo
+
+- [Browser Console Automation](browser-automation-guide.md) — the general field guide behind this case
+- [CODEX](README.md) — scope and charter for these notes
+
+[Back to the repository index](../README.md)

@@ -170,3 +170,13 @@ The “Invalid protocol” error in Dolphin is **not a networking issue** when C
 > **A stale KDE service cache or corrupted Dolphin user configuration**
 
 Resetting Dolphin config + rebuilding `ksycoca` restores proper protocol registration.
+
+---
+
+## Related guides in this repo
+
+- [Restoring Application Visibility in Dolphin](troubleshooting/kde-dolphin-xfce-file-association.md) — the sibling Dolphin-under-Xfce fix
+- [XFCE to KDE Plasma 6 Migration](kde-plasma-migration-guide.md) — the full move that avoids the mixed-desktop seam
+- [Remmina RDP Setup](debian-remmina-setup-guide.md) — a remote desktop instead of remote files
+
+[Back to the repository index](README.md)
