@@ -6,9 +6,9 @@
 ![Platform](https://img.shields.io/badge/platform-Debian%20%7C%20MX%20Linux-A80030?style=flat-square&logo=debian&logoColor=white)
 ![Base](https://img.shields.io/badge/base-Trixie%20%2F%20Debian%2013-blue?style=flat-square)
 ![Desktop](https://img.shields.io/badge/desktop-KDE%20Plasma%206%20%7C%20XFCE-1D99F3?style=flat-square&logo=kde&logoColor=white)
-![Docs](https://img.shields.io/badge/docs-25%20guides%20%C2%B7%20636%20sections-success?style=flat-square)
+![Docs](https://img.shields.io/badge/docs-25%20guides%20%C2%B7%20682%20sections-success?style=flat-square)
 ![Shell](https://img.shields.io/badge/shell-bash-4EAA25?style=flat-square&logo=gnubash&logoColor=white)
-![License](https://img.shields.io/badge/license-see%20notice-lightgrey?style=flat-square)
+![License](https://img.shields.io/badge/license-CC%20BY--SA%204.0-EF9421?style=flat-square&logo=creativecommons&logoColor=white)
 
 ---
 
@@ -102,6 +102,7 @@ graph TD
 ```text
 debian-howto-guides/
 ├── README.md                                  ← you are here
+├── LICENSE                                    CC BY-SA 4.0 (full legal code)
 │
 ├── mx25-first-10-minutes.md                   Post-install housekeeping
 ├── debian-docker-setup-guide.md               Docker CE + systemd
@@ -327,7 +328,7 @@ Consistent across the collection:
 - [x] Commands use `--yes` where a prompt would otherwise stall a copy-paste block
 - [x] Longer guides are split into numbered phases or steps
 - [x] Failure modes and their fixes live in the same file as the procedure
-- [ ] Cross-links between related guides — *sparse today; see [Contributing](#contributing)*
+- [x] Every guide ends with a **Related guides in this repo** block and a link back to this index
 - [ ] A per-guide "last verified" date — *only some guides carry one*
 
 Roughly two thirds of the collection is explanatory prose and one quarter is troubleshooting material — the ratio you'd expect from documents written in the aftermath of a problem rather than in advance of one.
@@ -364,9 +365,12 @@ Personal notes, but corrections are welcome — especially "this broke on releas
 
 | Gap | Detail |
 | :--- | :--- |
-| Cross-linking | The guides are near-fully independent — almost no document links to another. Related-guide links would help a lot. |
-| Heading anchors | A handful of in-page `#anchor` links don't resolve, mostly in `debian-xrdp-setup-guide.md`, where emoji headings and plain-text anchors disagree. |
 | Verification dates | Only some guides say when they were last confirmed working. |
+| One dead anchor | `codex/browser-automation-guide.md` has a Quick Reference link to `#️-check-visibility--enabled-state` that does not resolve. |
+| No link CI | Link integrity is checked by hand. Nothing catches rot introduced by a future heading rename. |
+
+> [!TIP]
+> Headings that carry a leading emoji get an anchor with a **leading hyphen** — Gitea renders `## 🎯 Overview` as `id="-overview"`, so a link to `#overview` silently fails. Where a heading must be linked, put an explicit `<a id="overview"></a>` on its own line above it. That survives Gitea's HTML sanitizer, works on GitHub too, and does not depend on the renderer's slug algorithm.
 
 ---
 
@@ -394,10 +398,12 @@ telegram-bot browser-automation claude-code
 
 ## License
 
-> [!NOTE]
-> The repository root carries **no license file**. The `codex/` subdirectory is licensed **GNU AGPL-3.0** ([`codex/LICENSE`](codex/LICENSE)) — it was an independent repository before being consolidated here, and that license travels with it.
->
-> If you intend to reuse material from outside `codex/`, ask first.
+This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/) — see [`LICENSE`](LICENSE) for the full legal code.
+
+You are free to **share** and **adapt** this material for any purpose, including commercially, provided you give appropriate credit and distribute your contributions under the same license.
+
+> [!IMPORTANT]
+> **The `codex/` subdirectory is the exception.** It is licensed **GNU AGPL-3.0** ([`codex/LICENSE`](codex/LICENSE)) — it was an independent repository before being consolidated here, and that license travels with it. CC BY-SA 4.0 governs everything outside `codex/`.
 
 ---
 

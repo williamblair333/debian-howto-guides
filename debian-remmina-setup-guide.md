@@ -224,3 +224,13 @@ Can use this in Remmina's quick connect bar.
 - **Always logout properly** from XRDP to avoid stuck sessions
 - **Windows RDP** works out of the box, no server setup needed
 - **MX Linux** uses Xfce by default - ensure `startxfce4` in `~/.xsession`
+
+---
+
+## Related guides in this repo
+
+- [XRDP Setup Guide](debian-xrdp-setup-guide.md) — the server side of this client
+- [Dolphin SFTP Remote Access](debian-kde-dolphin-xfce.md) — remote files rather than a remote desktop
+- [Virtual Machine Manager Setup](debian-virtman-setup-guide.md) — for consoles into local VMs instead
+
+[Back to the repository index](README.md)

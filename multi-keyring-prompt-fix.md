@@ -34,3 +34,12 @@ After your next `startx`, run this in a terminal:
 `echo $GNOME_KEYRING_CONTROL`
 
 If you see a path like `/run/user/1000/keyring/...`, your keyring is successfully unlocked!
+
+---
+
+## Related guides in this repo
+
+- [MX 25 First 10 Minutes](mx25-first-10-minutes.md) — where this prompt first shows up
+- [Linux Troubleshooting Instructions](linux-troubleshooting-guide.md) — the method for the next PAM oddity
+
+[Back to the repository index](README.md)

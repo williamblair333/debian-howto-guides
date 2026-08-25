@@ -21,6 +21,8 @@
 
 ---
 
+<a id="overview"></a>
+
 ## 🎯 Overview
 
 XRDP is an open-source implementation of Microsoft's Remote Desktop Protocol (RDP), allowing you to remotely access your Linux desktop from Windows, macOS, or Linux clients using standard RDP clients.
@@ -40,6 +42,8 @@ XRDP is an open-source implementation of Microsoft's Remote Desktop Protocol (RD
 - This guide uses only official MX/Debian repository packages
 
 ---
+
+<a id="prerequisites"></a>
 
 ## ✅ Prerequisites
 
@@ -66,6 +70,8 @@ pidof systemd && echo "systemd is running"
 
 ---
 
+<a id="installation"></a>
+
 ## 📦 Installation
 
 ### Step 1: Update Package Lists and Install XRDP
@@ -91,6 +97,8 @@ sudo ss -tlnp | grep 3389
 ```
 
 ---
+
+<a id="configuration"></a>
 
 ## ⚙️ Configuration
 
@@ -168,6 +176,8 @@ systemctl status xrdp-sesman --no-pager
 
 ---
 
+<a id="firewall-setup"></a>
+
 ## 🔥 Firewall Setup
 
 ### Open RDP Port
@@ -209,6 +219,8 @@ sudo ss -tlnp | grep 3389
 **Expected output:** Should show `xrdp` listening on `0.0.0.0:3389`
 
 ---
+
+<a id="testing-the-connection"></a>
 
 ## 🧪 Testing the Connection
 
@@ -258,6 +270,8 @@ xfreerdp /v:<MX_LINUX_IP> /u:<username> /p:<password> /cert:ignore
 3. Connect with your Linux credentials
 
 ---
+
+<a id="troubleshooting"></a>
 
 ## 🔧 Troubleshooting
 
@@ -490,6 +504,8 @@ Add this under Troubleshooting. This is a high-impact, real-world failure mode.
 
 ---
 
+<a id="optional-enhancements"></a>
+
 ## 🎨 Optional Enhancements
 
 ### 1. Optimize Performance Settings
@@ -545,6 +561,8 @@ xfreerdp /v:<host> /u:<user> /multimon
 ```
 
 ---
+
+<a id="security-considerations"></a>
 
 ## 🔒 Security Considerations
 
@@ -676,6 +694,8 @@ sudo fail2ban-client status xrdp
 
 ---
 
+<a id="references"></a>
+
 ## 📚 References
 
 ### Official Documentation
@@ -762,3 +782,13 @@ If you're stuck:
 
 **Last Updated:** January 25, 2026  
 **Tested On:** MX Linux 25 (Debian Trixie-based) with XFCE 4.18
+
+---
+
+## Related guides in this repo
+
+- [Remmina RDP Setup](debian-remmina-setup-guide.md) — the client side of this server
+- [XFCE to KDE Plasma 6 Migration](kde-plasma-migration-guide.md) — changes which session XRDP must start
+- [Virtual Machine Manager Setup](debian-virtman-setup-guide.md) — remote access to a virtualization host
+
+[Back to the repository index](README.md)

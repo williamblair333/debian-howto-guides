@@ -345,3 +345,10 @@ sudo journalctl -u falcon-sensor.service --no-pager -n 100
 - Treat `/etc/crowdstrike/falcon.env` as sensitive material.
 
 ---
+
+## Related guides in this repo
+
+- [Linux Troubleshooting Instructions](linux-troubleshooting-guide.md) — the method when the sensor misbehaves
+- [MX 25 First 10 Minutes](mx25-first-10-minutes.md) — baseline setup this assumes is done
+
+[Back to the repository index](README.md)

@@ -13,7 +13,7 @@
 - [5. Xfce compositor (only if Xfce)](#5-xfce-compositor-only-if-xfce)
 - [6. Linux swappiness = 10](#6-linux-swappiness--10)
 - [7. Ensure swap exists](#7-ensure-swap-exists)
-- [8. Verify GPU renderer](#8-verify-gpu-renderer)
+- [8. Verify GPU renderer](#8-verify-gpu-renderer-must-not-be-llvmpipe)
 - [9. Validate in chrome://gpu](#9-validate-in-chromegpu)
 
 ---
@@ -168,3 +168,13 @@ If You launch from terminal, these are typically non-fatal:
 | Swapping stalls | reduced via swappiness=10 |
 | System safety | swap present |
 
+
+---
+
+## Related guides in this repo
+
+- [NVIDIA Driver Installation](debian-nvidia-setup-guide.md) — the NVIDIA-side equivalent
+- [Linux Troubleshooting Instructions](linux-troubleshooting-guide.md) — the general diagnostic method
+- [MX 25 First 10 Minutes](mx25-first-10-minutes.md) — baseline desktop setup
+
+[Back to the repository index](README.md)

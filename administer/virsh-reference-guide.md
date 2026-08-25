@@ -972,3 +972,12 @@ done
 ║  detailed options. Happy virtualizing! 🚀                     ║
 ╚═══════════════════════════════════════════════════════════════╝
 ```
+
+---
+
+## Related guides in this repo
+
+- [Virtual Machine Manager Setup](../debian-virtman-setup-guide.md) — the GUI over the same libvirt stack
+- [Docker Setup](../debian-docker-setup-guide.md) — containers as the lighter alternative
+
+[Back to the repository index](../README.md)

@@ -212,3 +212,14 @@ MX Linux's `ddm-mx` tool:
 - Provides easy rollback with `-p` flag
 - Maintains MX-specific configurations
 - Logs everything to `/var/log/ddm.log`
+
+---
+
+## Related guides in this repo
+
+- [Docker Setup](debian-docker-setup-guide.md) — pair with the driver for GPU containers
+- [Open WebUI with Ollama](open-webui/README.md) — has a CUDA compose file that depends on this driver
+- [Chrome Freezing Fix (AMD)](chrome-gpu-amd-freeze.md) — the AMD-side equivalent when the GPU is the problem
+- [Virtual Machine Manager Setup](debian-virtman-setup-guide.md) — relevant if you plan to pass the GPU through
+
+[Back to the repository index](README.md)

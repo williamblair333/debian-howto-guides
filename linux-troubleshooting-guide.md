@@ -426,3 +426,14 @@ Adapt recommendations based on:
 - Whether this is a production or personal system
 - Time constraints (quick fix vs. proper solution)
 - Whether they need to understand the fix or just need it done
+
+---
+
+## Related guides in this repo
+
+- [Chrome Freezing Fix (AMD)](chrome-gpu-amd-freeze.md) — a worked example of this method
+- [Auto-Unlock Login Keyring](multi-keyring-prompt-fix.md) — a second worked example
+- [Restoring Application Visibility in Dolphin](troubleshooting/kde-dolphin-xfce-file-association.md) — a third, in the desktop-integration seam
+- [CrowdStrike Falcon Sensor](falcon-sensor-deploy-linux.md) — includes its own troubleshooting and uninstall path
+
+[Back to the repository index](README.md)
