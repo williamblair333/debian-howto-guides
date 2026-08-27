@@ -103,6 +103,8 @@ graph TD
 debian-howto-guides/
 ├── README.md                                  ← you are here
 ├── LICENSE                                    CC BY-SA 4.0 (full legal code)
+├── CHANGELOG.md                               What changed, newest first
+├── HANDOFF.md                                 Current state + open items
 │
 ├── mx25-first-10-minutes.md                   Post-install housekeeping
 ├── debian-docker-setup-guide.md               Docker CE + systemd
