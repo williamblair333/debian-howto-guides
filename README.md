@@ -118,6 +118,8 @@ debian-howto-guides/
 ├── chrome-gpu-amd-freeze.md                   Chrome hangs on AMD Polaris
 ├── debian-kde-dolphin-xfce.md                 Dolphin SFTP "Invalid protocol"
 ├── multi-keyring-prompt-fix.md                Login keyring auto-unlock
+├── cups-printer-usb-serial-fix.md             USB printer vanishes after reboot
+├── cups-usb-printer-fix.sh                    ^ the automated fix for that
 ├── linux-troubleshooting-guide.md             Diagnostic methodology (AI prompt)
 │
 ├── administer/
@@ -195,6 +197,7 @@ Each of these is scoped to one specific, reproducible failure.
 | Dolphin: `Invalid protocol` on an `sftp://` URL | [`debian-kde-dolphin-xfce.md`](debian-kde-dolphin-xfce.md) |
 | Dolphin **Open With** list empty, or file associations forgotten under XFCE | [`troubleshooting/kde-dolphin-xfce-file-association.md`](troubleshooting/kde-dolphin-xfce-file-association.md) |
 | A second keyring password prompt after you already logged in | [`multi-keyring-prompt-fix.md`](multi-keyring-prompt-fix.md) |
+| A USB printer that prints once, then must be deleted and re-added after every reboot | [`cups-printer-usb-serial-fix.md`](cups-printer-usb-serial-fix.md) |
 | Something else, and you need a method rather than an answer | [`linux-troubleshooting-guide.md`](linux-troubleshooting-guide.md) |
 
 </details>
@@ -242,7 +245,27 @@ Preserves operational knowledge that required investigation, debugging, or rever
 
 ## Scripts
 
-Two standalone Bash utilities. Both are short enough to read before you run them — **please do.**
+Three standalone Bash utilities. All are short enough to read before you run them — **please do.**
+
+<details>
+<summary><b><code>cups-usb-printer-fix.sh</code></b> — fix a USB printer that vanishes after reboot</summary>
+
+Diagnoses and repairs CUPS queues pinned to an unstable USB serial number — the cause of a printer that prints once, then has to be deleted and re-added after every reboot. Companion to [`cups-printer-usb-serial-fix.md`](cups-printer-usb-serial-fix.md).
+
+```bash
+./cups-usb-printer-fix.sh            # diagnose everything, prompt to fix
+./cups-usb-printer-fix.sh --check    # cron-safe, writes nothing, exit 1 if broken
+./cups-usb-printer-fix.sh --fix      # repair without prompting
+./cups-usb-printer-fix.sh --create HPLJ   # set a printer up correctly on a new machine
+./cups-usb-printer-fix.sh --test HPLJ     # prove it with a real page
+```
+
+- Diagnose-first: bare run changes nothing until you answer the prompt. `-n` dry-runs anything.
+- Every change is logged with the previous URI to `~/.cache/cups-usb-printer-fix.log`, so a fix is always reversible.
+- Refuses to strip the serial when two identical printers are attached — there, the serial is the only thing telling them apart.
+- Needs the `lpadmin` group to apply fixes; `--share` needs root.
+
+</details>
 
 <details>
 <summary><b><code>kde-audit.sh</code></b> — KDE/Plasma completeness audit</summary>
@@ -380,7 +403,7 @@ Personal notes, but corrections are welcome — especially "this broke on releas
 `trixie` · `kde` · `plasma6` · `xfce` · `xrdp` · `remote-desktop` · `kvm` · `qemu` · `virsh` ·
 `libvirt` · `docker` · `docker-compose` · `nvidia` · `amd-gpu` · `python` · `tmux` · `bash` ·
 `troubleshooting` · `crowdstrike` · `ollama` · `open-webui` · `n8n` · `telegram-bot` ·
-`browser-automation` · `claude-code`
+`browser-automation` · `claude-code` · `cups` · `printing` · `usb`
 
 <details>
 <summary>Copy-paste list for GitHub repository topics</summary>
@@ -389,7 +412,7 @@ Personal notes, but corrections are welcome — especially "this broke on releas
 debian mx-linux linux sysadmin documentation howto runbook trixie kde plasma6
 xfce xrdp remote-desktop kvm qemu virsh libvirt docker docker-compose nvidia
 amd-gpu python tmux bash troubleshooting crowdstrike ollama open-webui n8n
-telegram-bot browser-automation claude-code
+telegram-bot browser-automation claude-code cups printing usb
 ```
 
 </details>
