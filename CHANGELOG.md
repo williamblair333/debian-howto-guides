@@ -13,6 +13,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) loosely:
 
 ---
 
+## 2026-10-05 — Python guide moves to uv
+
+### Changed
+- `debian-python3-setup-guide.md` — rewritten around uv as the default tool:
+  projects (`uv init` / `uv add` / `uv run`), CLI tools (`uv tool`, `uvx`),
+  other Python versions (`uv python install`), and plain venvs (`uv venv`).
+  Poetry moves to an appendix for existing projects, with a Poetry → uv
+  migration note. Every command was run on uv 0.10.9 / Poetry 2.3.1.
+- `README.md` — updated the guide's description and section count.
+
+### Fixed
+- `debian-python3-setup-guide.md` — `poetry shell` no longer exists
+  (removed in Poetry 2.0); replaced with `eval "$(poetry env activate)"`.
+  Trixie's Python is 3.13, not "3.11+". Dropped the unneeded
+  `python3-wheel` / `python3-setuptools` / `python3-pip` installs.
+
+---
+
 ## 2026-08-27 — CUPS USB printer serial fix
 
 ### Added
