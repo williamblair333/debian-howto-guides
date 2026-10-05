@@ -3,13 +3,14 @@
 State of this repository for whoever picks it up next — human or agent.
 Updated at the end of each working session.
 
-**Last updated:** 2026-08-27
+**Last updated:** 2026-10-05
 
 ---
 
 ## Current state
 
-Clean. `main` is at `a3f48de`, working tree empty, nothing in flight.
+Clean. Last change: the Python guide was rewritten uv-first (see
+`CHANGELOG.md`, 2026-10-05). Nothing in flight.
 43 commits, 27 tracked markdown documents, 3 shell scripts, 2 compose files.
 
 The collection is a set of Debian / MX Linux how-to guides plus a few
@@ -52,6 +53,9 @@ Nothing is blocked. These are genuinely optional.
 
 ## Things that will bite you
 
+- **jdocmunch reports 3 broken links that aren't broken.** Two are
+  footnote definitions (`[^osha]`, `[^1]`) misread as links; the third is
+  an emoji-heading anchor that keeps U+FE0F on purpose. Don't "fix" them.
 - **The printer's USB serial is not stable.** It alternates between tails
   `PR1a` and `SI1c` on the test hardware. Any queue created from GUI
   discovery will re-bake a serial into the URI and reintroduce the bug.

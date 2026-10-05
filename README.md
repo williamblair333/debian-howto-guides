@@ -109,7 +109,7 @@ debian-howto-guides/
 ├── mx25-first-10-minutes.md                   Post-install housekeeping
 ├── debian-docker-setup-guide.md               Docker CE + systemd
 ├── debian-nvidia-setup-guide.md               NVIDIA proprietary driver
-├── debian-python3-setup-guide.md              venv / pipx / poetry under PEP 668
+├── debian-python3-setup-guide.md              uv-first Python setup under PEP 668
 ├── debian-remmina-setup-guide.md              RDP client
 ├── debian-tmux-motd-setup-guide.md            tmux session manager + MOTD
 ├── debian-virtman-setup-guide.md              KVM/QEMU + virt-manager
@@ -169,7 +169,7 @@ Green-field procedures. Run top to bottom on a fresh system.
 | [`mx25-first-10-minutes.md`](mx25-first-10-minutes.md) | Post-install housekeeping — kill the annoyances, install essentials, enable backports | MX 25 · Xfce · amd64 | 16 § |
 | [`debian-docker-setup-guide.md`](debian-docker-setup-guide.md) | Docker installation on a systemd MX 25 | MX 25 (Trixie) | 10 § |
 | [`debian-nvidia-setup-guide.md`](debian-nvidia-setup-guide.md) | GPU identification through official driver install | MX 25 | 24 § |
-| [`debian-python3-setup-guide.md`](debian-python3-setup-guide.md) | `venv`, `pipx`, `poetry` — and the four things that break system Python | MX Trixie (Debian 13) | 35 § |
+| [`debian-python3-setup-guide.md`](debian-python3-setup-guide.md) | `uv` for projects, tools and Python versions (Poetry appendix) — and the things that break system Python | MX Trixie (Debian 13) | 41 § |
 | [`debian-remmina-setup-guide.md`](debian-remmina-setup-guide.md) | Remmina RDP client, with plugin | MX Trixie | 27 § |
 | [`debian-tmux-motd-setup-guide.md`](debian-tmux-motd-setup-guide.md) | tmux session manager plus a custom MOTD, in four copy-paste blocks | Debian / Ubuntu | 20 § |
 | [`debian-virtman-setup-guide.md`](debian-virtman-setup-guide.md) | KVM/QEMU virtualization with virt-manager | MX Trixie · systemd | 19 § |
