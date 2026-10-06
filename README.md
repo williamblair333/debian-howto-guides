@@ -113,6 +113,7 @@ debian-howto-guides/
 ├── debian-remmina-setup-guide.md              RDP client
 ├── debian-tmux-motd-setup-guide.md            tmux session manager + MOTD
 ├── debian-virtman-setup-guide.md              KVM/QEMU + virt-manager
+├── debian-wifi-uplink-guide.md                Server on WiFi: limits + routed bridge
 ├── debian-xrdp-setup-guide.md                 XRDP remote desktop server
 ├── falcon-sensor-deploy-linux.md              CrowdStrike Falcon sensor
 │
@@ -173,6 +174,7 @@ Green-field procedures. Run top to bottom on a fresh system.
 | [`debian-remmina-setup-guide.md`](debian-remmina-setup-guide.md) | Remmina RDP client, with plugin | MX Trixie | 27 § |
 | [`debian-tmux-motd-setup-guide.md`](debian-tmux-motd-setup-guide.md) | tmux session manager plus a custom MOTD, in four copy-paste blocks | Debian / Ubuntu | 20 § |
 | [`debian-virtman-setup-guide.md`](debian-virtman-setup-guide.md) | KVM/QEMU virtualization with virt-manager | MX Trixie · systemd | 19 § |
+| [`debian-wifi-uplink-guide.md`](debian-wifi-uplink-guide.md) | What breaks when a server's only uplink is WiFi, and a routed `br0` + nftables NAT bridge that keeps VMs and containers working | Debian 13 (Trixie) · NetworkManager | 13 § |
 | [`debian-xrdp-setup-guide.md`](debian-xrdp-setup-guide.md) | XRDP server: install, config, firewall, audio, clipboard, multi-session | MX Linux · XFCE | 73 § |
 | [`falcon-sensor-deploy-linux.md`](falcon-sensor-deploy-linux.md) | CrowdStrike Falcon: install, `.env` config, verify, troubleshoot, clean uninstall | Debian/Ubuntu · systemd | 38 § |
 
@@ -200,6 +202,7 @@ Each of these is scoped to one specific, reproducible failure.
 | Dolphin **Open With** list empty, or file associations forgotten under XFCE | [`troubleshooting/kde-dolphin-xfce-file-association.md`](troubleshooting/kde-dolphin-xfce-file-association.md) |
 | A second keyring password prompt after you already logged in | [`multi-keyring-prompt-fix.md`](multi-keyring-prompt-fix.md) |
 | A USB printer that prints once, then must be deleted and re-added after every reboot | [`cups-printer-usb-serial-fix.md`](cups-printer-usb-serial-fix.md) |
+| VMs or macvlan containers lose network when the server is on WiFi, or inbound SSH lags | [`debian-wifi-uplink-guide.md`](debian-wifi-uplink-guide.md) |
 | Something else, and you need a method rather than an answer | [`linux-troubleshooting-guide.md`](linux-troubleshooting-guide.md) |
 
 </details>
@@ -405,7 +408,7 @@ Personal notes, but corrections are welcome — especially "this broke on releas
 `trixie` · `kde` · `plasma6` · `xfce` · `xrdp` · `remote-desktop` · `kvm` · `qemu` · `virsh` ·
 `libvirt` · `docker` · `docker-compose` · `nvidia` · `amd-gpu` · `python` · `tmux` · `bash` ·
 `troubleshooting` · `crowdstrike` · `ollama` · `open-webui` · `n8n` · `telegram-bot` ·
-`browser-automation` · `claude-code` · `cups` · `printing` · `usb`
+`browser-automation` · `claude-code` · `cups` · `printing` · `usb` · `wifi` · `networking` · `nftables`
 
 <details>
 <summary>Copy-paste list for GitHub repository topics</summary>
@@ -414,7 +417,8 @@ Personal notes, but corrections are welcome — especially "this broke on releas
 debian mx-linux linux sysadmin documentation howto runbook trixie kde plasma6
 xfce xrdp remote-desktop kvm qemu virsh libvirt docker docker-compose nvidia
 amd-gpu python tmux bash troubleshooting crowdstrike ollama open-webui n8n
-telegram-bot browser-automation claude-code cups printing usb
+telegram-bot browser-automation claude-code cups printing usb wifi networking
+nftables
 ```
 
 </details>

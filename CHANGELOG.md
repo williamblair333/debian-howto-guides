@@ -13,6 +13,33 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) loosely:
 
 ---
 
+## 2026-10-06 — Server-on-WiFi guide
+
+### Added
+- `debian-wifi-uplink-guide.md` — what stops working when a Debian 13
+  server's only uplink is WiFi (bridging, macvlan, WoL, interface-pinned
+  config), the power-save fix, and a routed `br0` + nftables NAT workaround,
+  with a parprouted alternative and a rollback.
+- `README.md` — registered the guide in the tree, setup table, symptom
+  lookup and tags.
+
+### Fixed (relative to the draft the guide was written from)
+- NAT rules live in their own file and unit; restarting `nftables` with
+  Debian's `flush ruleset` config would have wiped Docker and libvirt rules.
+- Port-forward DNAT limited to `fib daddr type local`, so containers'
+  outbound mail is no longer hijacked; forwarded inbound connections are
+  now accepted (`ct status dnat`).
+- Docker's FORWARD DROP handled with `"ip-forward-no-drop": true`.
+- Rollback no longer turns off `ip_forward` (breaks Docker/libvirt), and the
+  backup now saves the NetworkManager profiles themselves, not just names.
+- Warned against cabling the LAN port to the upstream network (rogue DHCP);
+  dnsmasq is DHCP-only (`port=0`) with `bind-dynamic`.
+- Predictable interface names instead of `eth0`/`wlan0`; `iwlmvm
+  power_scheme=1` replaces the no-op `iwlwifi power_save=0`; parprouted gets
+  its missing `ip_forward`, `/32` address and `dhcp-helper` config.
+
+---
+
 ## 2026-10-05 — Python guide moves to uv
 
 ### Changed

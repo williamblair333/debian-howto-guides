@@ -3,15 +3,15 @@
 State of this repository for whoever picks it up next — human or agent.
 Updated at the end of each working session.
 
-**Last updated:** 2026-10-05
+**Last updated:** 2026-10-06
 
 ---
 
 ## Current state
 
-Clean. Last change: the Python guide was rewritten uv-first (see
-`CHANGELOG.md`, 2026-10-05). Nothing in flight.
-43 commits, 27 tracked markdown documents, 3 shell scripts, 2 compose files.
+Clean. Last change: added `debian-wifi-uplink-guide.md` (see
+`CHANGELOG.md`, 2026-10-06). Nothing in flight.
+30 tracked markdown documents, 3 shell scripts, 2 compose files.
 
 The collection is a set of Debian / MX Linux how-to guides plus a few
 standalone utilities. It is documentation-first: scripts exist only where
@@ -47,6 +47,7 @@ Nothing is blocked. These are genuinely optional.
 | `cups-usb-printer-fix.sh --share` | **Never applied for real** — dry-run only. It opens a network print service, so it was left for the owner to run. |
 | `ipp-usb` / Wi-Fi / non-HP printers | Reasoned from the same mechanism, marked as unverified in the guide. Nobody has tested them. |
 | CUPS PPD deprecation | `lpadmin -m <ppd>` now warns that drivers "will stop working in a future version of CUPS". Fine on 2.4; CUPS 3.x drops them. Re-prove queues after a major upgrade with `--test`. |
+| `debian-wifi-uplink-guide.md` §6–§7 | **Design reviewed, not field-tested.** The nftables file was load-tested in a network namespace only. Run §6 on a real WiFi-only host and update the guide's "Verified vs. not" section. |
 | `CHANGELOG.md` pre-2026-08 entries | Reconstructed coarsely from commit messages. The early history is `Add files via upload` with no detail to recover. Not worth backfilling further. |
 
 ---
