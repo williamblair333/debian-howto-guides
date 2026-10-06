@@ -19,22 +19,20 @@ a guide needed automating.
 
 ---
 
-## Completed this session (2026-08-27)
+## Completed this session (2026-10-06)
 
-Diagnosed and fixed a USB printer that printed once, then had to be
-deleted and re-added after every reboot.
+Reviewed a draft "Debian server on WiFi" guide, fixed it, and shipped it
+as `debian-wifi-uplink-guide.md` (PR #6, merge `aa087cf`).
 
-- **Root cause:** the CUPS queue was pinned to a USB serial number that the
-  printer does not consistently report. Both backends bake `?serial=` into
-  the device URI at discovery time.
-- **Fix:** drop the serial so the `usb` backend matches on make/model:
-  `lpadmin -p HPLJ -v 'usb://HP/LaserJet%20Professional%20P1102w'`
-- **Shipped:** `cups-printer-usb-serial-fix.md` (the guide) and
-  `cups-usb-printer-fix.sh` (the automation), merged as PR #3.
-
-Verified across a printer power-cycle, a machine reboot, and a USB
-unplug/replug — one queue, two different reported serials, four test
-pages.
+- **Biggest fixes:** NAT rules moved out of `/etc/nftables.conf` (its
+  `flush ruleset` wipes Docker/libvirt rules) into
+  `/etc/nftables.d/lan-nat.nft` + `lan-nat.service`; DNAT scoped with
+  `fib daddr type local`; Docker FORWARD DROP handled via
+  `"ip-forward-no-drop": true`; rollback no longer disables `ip_forward`.
+- **Verified:** the nftables file loads and reloads idempotently in a
+  network namespace (`unshare -rn`, nftables 1.1.3); `iwlmvm`/`iwlwifi`
+  power parameters checked with `modinfo`.
+- **Not verified:** §6–§7 on a real WiFi-only host (see Open items).
 
 ---
 
@@ -92,7 +90,12 @@ Nothing is blocked. These are genuinely optional.
 
 ## Next session
 
-No pending work. Pick up whatever is in front of you.
+No pending work. If a WiFi-only Debian host is available, field-test
+`debian-wifi-uplink-guide.md` §6 and move it from "reviewed design" to
+verified in its §12.
+
+Testing nftables changes without root: `unshare -rn nft -f <file>` loads
+a ruleset into a throwaway namespace — useful for syntax and reload checks.
 
 If the printer misbehaves again, start with `lpstat -v HPLJ` — if a
 `?serial=` has reappeared in the URI, something re-added the queue through
