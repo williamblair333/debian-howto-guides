@@ -7,6 +7,9 @@
 
 Each limitation is tagged **[V]** (verified, source in [References](#13-references)) or **[U]** (unverified, reasoned from the same root cause). The procedure in §6–§8 is reasoned from documented behaviour and has **not** been run end-to-end on real hardware for this guide — see [Verified vs. not](#12-verified-vs-not).
 
+> [!TIP]
+> Wi-Fi not up at all (`nmcli` shows it `unavailable`)? Start with [debian-wifi-rfkill-bringup.md](debian-wifi-rfkill-bringup.md).
+
 ---
 
 ## 1. Interface names used in this guide
@@ -401,6 +404,7 @@ journalctl -k -b | grep -iE 'wl|iwlwifi|iwlmvm|br0'
 
 ## Related guides in this repo
 
+- [Wi-Fi Won't Come Up](debian-wifi-rfkill-bringup.md) — Wi-Fi not up at all? Start here
 - [Debian Docker Setup](debian-docker-setup-guide.md) — Docker install; see §6.5 here before routing through a Docker host
 - [KVM/QEMU with virt-manager](debian-virtman-setup-guide.md) — the VMs you'd attach to `br0`
 - [virsh reference](administer/virsh-reference-guide.md) — network and interface commands for libvirt

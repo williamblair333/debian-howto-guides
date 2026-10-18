@@ -138,7 +138,21 @@ Edit `/etc/apt/sources.list.d/debian.sources` and uncomment the backports sectio
 
 ---
 
-## 9. Update System
+## 9. Bring Up Wi-Fi (If It Shows Unavailable)
+
+The next two steps need a network. If `nmcli dev status` shows the Wi-Fi interface as `unavailable`, the radio is usually rfkill-blocked:
+
+```bash
+rfkill list
+sudo rfkill unblock all
+nmcli radio wifi on
+```
+
+If `rfkill list` still says `Hard blocked: yes`, it's a physical switch, Fn key or BIOS setting, not software. The tray icon on Xfce is the NetworkManager applet (`nm-applet`); check it's installed with `dpkg -l | grep -E 'network-manager-gnome|nm-applet'`. Full procedure: [Wi-Fi Won't Come Up](debian-wifi-rfkill-bringup.md).
+
+---
+
+## 10. Update System
 
 ```bash
 sudo apt update
@@ -148,7 +162,7 @@ sudo apt update
 
 ---
 
-## 10. Install Essential Sysadmin Tools
+## 11. Install Essential Sysadmin Tools
 
 One command to install the RHCSA-aligned essentials:
 
@@ -241,5 +255,6 @@ These deserve their own dedicated howtos:
 - [tmux Session Manager + Custom MOTD](debian-tmux-motd-setup-guide.md) — shell quality-of-life once the desktop is usable
 - [Auto-Unlock Login Keyring](multi-keyring-prompt-fix.md) — fixes the duplicate password prompt this guide leaves in place
 - [XFCE to KDE Plasma 6 Migration](kde-plasma-migration-guide.md) — if you would rather not stay on Xfce
+- [Wi-Fi Won't Come Up](debian-wifi-rfkill-bringup.md) — rfkill blocks and NetworkManager, the long form of §9
 
 [Back to the repository index](README.md)

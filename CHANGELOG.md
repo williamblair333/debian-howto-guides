@@ -13,6 +13,36 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) loosely:
 
 ---
 
+## 2026-10-18 — Wi-Fi rfkill bring-up guide
+
+### Added
+- `debian-wifi-rfkill-bringup.md` — getting a Wi-Fi interface from
+  `unavailable` to connected: rfkill soft/hard blocks, the Dell
+  `dell-wifi` / `phy0` desync, `nmcli` connect, system-wide secrets, the
+  KDE tray icon, firmware, and whether the unblock survives a reboot.
+  Tested on Debian 11 only.
+- `mx25-first-10-minutes.md` — new §9 "Bring Up Wi-Fi", before the update
+  step that needs a network.
+- `README.md` — registered the guide in the tree, symptom lookup, tested
+  environments and tags.
+
+### Changed
+- `mx25-first-10-minutes.md` — Update System is now §10, Essential Tools §11.
+- `debian-wifi-uplink-guide.md` — points to the new guide when Wi-Fi isn't
+  up at all.
+- `README.md` — guide count 25 → 26; badge section count corrected from a
+  stale 682 to 724.
+
+### Fixed (relative to the draft the guide was written from)
+- `--ask` moved before the `nmcli` object, where nmcli parses it.
+- Making a tray-created connection system-wide now sets `wifi-sec.psk`
+  along with `psk-flags 0`; changing the flags alone leaves no password.
+- Module reload removes `iwlmvm` before `iwlwifi`.
+- `dmesg` uses `sudo` throughout (Debian restricts it).
+- rfkill persistence is scoped to systemd; MX can boot sysVinit.
+
+---
+
 ## 2026-10-06 — Server-on-WiFi guide
 
 ### Added

@@ -1,12 +1,12 @@
 # Debian HOWTO Guides
 
 > **Field notes from a Linux workstation that actually gets used.**
-> Twenty-five runbooks covering Debian, MX Linux, KDE/XFCE, virtualization, and the AI tooling that sits on top of them — each one written *after* the problem was solved, with the exact commands that worked.
+> Twenty-six runbooks covering Debian, MX Linux, KDE/XFCE, virtualization, and the AI tooling that sits on top of them — each one written *after* the problem was solved, with the exact commands that worked.
 
 ![Platform](https://img.shields.io/badge/platform-Debian%20%7C%20MX%20Linux-A80030?style=flat-square&logo=debian&logoColor=white)
 ![Base](https://img.shields.io/badge/base-Trixie%20%2F%20Debian%2013-blue?style=flat-square)
 ![Desktop](https://img.shields.io/badge/desktop-KDE%20Plasma%206%20%7C%20XFCE-1D99F3?style=flat-square&logo=kde&logoColor=white)
-![Docs](https://img.shields.io/badge/docs-25%20guides%20%C2%B7%20682%20sections-success?style=flat-square)
+![Docs](https://img.shields.io/badge/docs-26%20guides%20%C2%B7%20724%20sections-success?style=flat-square)
 ![Shell](https://img.shields.io/badge/shell-bash-4EAA25?style=flat-square&logo=gnubash&logoColor=white)
 ![License](https://img.shields.io/badge/license-CC%20BY--SA%204.0-EF9421?style=flat-square&logo=creativecommons&logoColor=white)
 
@@ -123,6 +123,7 @@ debian-howto-guides/
 ├── multi-keyring-prompt-fix.md                Login keyring auto-unlock
 ├── cups-printer-usb-serial-fix.md             USB printer vanishes after reboot
 ├── cups-usb-printer-fix.sh                    ^ the automated fix for that
+├── debian-wifi-rfkill-bringup.md              Wi-Fi "unavailable": rfkill + nmcli
 ├── linux-troubleshooting-guide.md             Diagnostic methodology (AI prompt)
 │
 ├── administer/
@@ -167,7 +168,7 @@ Green-field procedures. Run top to bottom on a fresh system.
 
 | Guide | Covers | Target | Size |
 | :--- | :--- | :--- | ---: |
-| [`mx25-first-10-minutes.md`](mx25-first-10-minutes.md) | Post-install housekeeping — kill the annoyances, install essentials, enable backports | MX 25 · Xfce · amd64 | 16 § |
+| [`mx25-first-10-minutes.md`](mx25-first-10-minutes.md) | Post-install housekeeping — kill the annoyances, install essentials, enable backports, bring up Wi-Fi | MX 25 · Xfce · amd64 | 17 § |
 | [`debian-docker-setup-guide.md`](debian-docker-setup-guide.md) | Docker installation on a systemd MX 25 | MX 25 (Trixie) | 10 § |
 | [`debian-nvidia-setup-guide.md`](debian-nvidia-setup-guide.md) | GPU identification through official driver install | MX 25 | 24 § |
 | [`debian-python3-setup-guide.md`](debian-python3-setup-guide.md) | `uv` for projects, tools and Python versions (Poetry appendix) — and the things that break system Python | MX Trixie (Debian 13) | 41 § |
@@ -202,6 +203,7 @@ Each of these is scoped to one specific, reproducible failure.
 | Dolphin **Open With** list empty, or file associations forgotten under XFCE | [`troubleshooting/kde-dolphin-xfce-file-association.md`](troubleshooting/kde-dolphin-xfce-file-association.md) |
 | A second keyring password prompt after you already logged in | [`multi-keyring-prompt-fix.md`](multi-keyring-prompt-fix.md) |
 | A USB printer that prints once, then must be deleted and re-added after every reboot | [`cups-printer-usb-serial-fix.md`](cups-printer-usb-serial-fix.md) |
+| `nmcli` shows the Wi-Fi interface `unavailable`, or `rfkill list` says `Hard blocked: yes` | [`debian-wifi-rfkill-bringup.md`](debian-wifi-rfkill-bringup.md) |
 | VMs or macvlan containers lose network when the server is on WiFi, or inbound SSH lags | [`debian-wifi-uplink-guide.md`](debian-wifi-uplink-guide.md) |
 | Something else, and you need a method rather than an answer | [`linux-troubleshooting-guide.md`](linux-troubleshooting-guide.md) |
 
@@ -369,6 +371,7 @@ Roughly two thirds of the collection is explanatory prose and one quarter is tro
 | :--- | :--- | :--- |
 | **MX Linux 25 "Infinity"** | Debian 13 (Trixie) | Most guides — the primary platform |
 | **MX Linux 23** | Debian 12 (Bookworm) | Chrome / AMD Polaris fix |
+| **Debian 11** | Bullseye · KDE Plasma 5 | Wi-Fi rfkill bring-up |
 | **Debian / Ubuntu** *(generic)* | — | tmux + MOTD, Falcon sensor |
 | **RHEL / Rocky Linux** | — | virsh reference |
 
@@ -408,7 +411,7 @@ Personal notes, but corrections are welcome — especially "this broke on releas
 `trixie` · `kde` · `plasma6` · `xfce` · `xrdp` · `remote-desktop` · `kvm` · `qemu` · `virsh` ·
 `libvirt` · `docker` · `docker-compose` · `nvidia` · `amd-gpu` · `python` · `tmux` · `bash` ·
 `troubleshooting` · `crowdstrike` · `ollama` · `open-webui` · `n8n` · `telegram-bot` ·
-`browser-automation` · `claude-code` · `cups` · `printing` · `usb` · `wifi` · `networking` · `nftables`
+`browser-automation` · `claude-code` · `cups` · `printing` · `usb` · `wifi` · `rfkill` · `networking` · `nftables`
 
 <details>
 <summary>Copy-paste list for GitHub repository topics</summary>
@@ -417,8 +420,8 @@ Personal notes, but corrections are welcome — especially "this broke on releas
 debian mx-linux linux sysadmin documentation howto runbook trixie kde plasma6
 xfce xrdp remote-desktop kvm qemu virsh libvirt docker docker-compose nvidia
 amd-gpu python tmux bash troubleshooting crowdstrike ollama open-webui n8n
-telegram-bot browser-automation claude-code cups printing usb wifi networking
-nftables
+telegram-bot browser-automation claude-code cups printing usb wifi rfkill
+networking nftables
 ```
 
 </details>
