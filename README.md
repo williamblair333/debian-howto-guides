@@ -173,7 +173,7 @@ Green-field procedures. Run top to bottom on a fresh system.
 
 | Guide | Covers | Target | Size |
 | :--- | :--- | :--- | ---: |
-| [`mx25-first-10-minutes.md`](mx25-first-10-minutes.md) | Post-install housekeeping — kill the annoyances, install essentials, enable backports, bring up Wi-Fi | MX 25 · Xfce · amd64 | 17 § |
+| [`mx25-first-10-minutes.md`](mx25-first-10-minutes.md) | Post-install housekeeping — kill the annoyances, set time and hostname, Timeshift snapshot, install essentials, firewall, trim, journal cap, zram, SSH key | MX 25 · Xfce · amd64 | 24 § |
 | [`debian-desktop-to-server.md`](debian-desktop-to-server.md) | Turn a desktop, laptop or Pi into an unattended server — no sleep, headless boot, fixed IP, SSH, auto-updates, firewall, power-loss recovery, watchdog, one-block verify | Debian 13 · MX 25 (systemd) · Pi OS | 19 § |
 | [`debian-ssh-client-setup.md`](debian-ssh-client-setup.md) | ed25519 key, one `~/.ssh/config.d/` file per host, `ssh-copy-id`, then password login off — with a script that does all of it | Debian 13 · OpenSSH 10 | 12 § |
 | [`debian-sshfs-mounts.md`](debian-sshfs-mounts.md) | Mount a server folder locally with sshfs — keepalive/reconnect options, an SFTP-only key, and a systemd user service that remounts at login or boot — with a script | Debian 13 · sshfs 3.7 · systemd | 13 § |

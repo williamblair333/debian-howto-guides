@@ -175,6 +175,6 @@ If You launch from terminal, these are typically non-fatal:
 
 - [NVIDIA Driver Installation](debian-nvidia-setup-guide.md) — the NVIDIA-side equivalent
 - [Linux Troubleshooting Instructions](linux-troubleshooting-guide.md) — the general diagnostic method
-- [MX 25 First 10 Minutes](mx25-first-10-minutes.md) — baseline desktop setup
+- [MX 25 First 30 Minutes](mx25-first-10-minutes.md) — baseline desktop setup
 
 [Back to the repository index](README.md)

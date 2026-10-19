@@ -147,7 +147,7 @@ grep WirelessEnabled /var/lib/NetworkManager/NetworkManager.state   # expect tru
 ## Related guides in this repo
 
 - [Running a Debian Server on WiFi](debian-wifi-uplink-guide.md) — what to do once Wi-Fi is up
-- [MX 25 First 10 Minutes](mx25-first-10-minutes.md) — post-install checklist; links here
+- [MX 25 First 30 Minutes](mx25-first-10-minutes.md) — post-install checklist; links here
 - [Docker Setup](debian-docker-setup-guide.md) — Docker on the same host
 
 [Back to the repository index](README.md)
