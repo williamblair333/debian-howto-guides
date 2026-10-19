@@ -13,6 +13,28 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) loosely:
 
 ---
 
+## 2026-10-19 — Desktop-to-server and SSH client guides
+
+### Added
+- `debian-desktop-to-server.md` — making a desktop, laptop or Pi run
+  unattended: hostname/mDNS, fixed address, masked sleep targets and lid
+  handling, headless boot, SSH + fail2ban (journal backend),
+  unattended-upgrades without auto-reboot, ufw (and the Docker bypass),
+  Wi-Fi power save, power-loss recovery, laptop charge cap, Pi power and
+  SD wear, persistent journal, hardware watchdog, and a one-block verify.
+- `debian-ssh-client-setup.md` — ed25519 key, `Include config.d/*` with
+  one file per host, `ssh-copy-id`, BatchMode proof, then password login
+  off via an early-sorting `sshd_config.d` drop-in.
+- `ssh-add-host.sh` — does the SSH guide for one host per run; `-n`,
+  `--check`, `--remove`, `--harden` (asks first, reverts on `sshd -t`
+  failure, re-tests on a fresh connection).
+- `README.md` — registered all three; guide count 28, badge 755 sections.
+
+### Changed
+- `debian-wifi-uplink-guide.md` — related-guides link to the server guide.
+
+---
+
 ## 2026-10-18 — Wi-Fi rfkill bring-up guide
 
 ### Added

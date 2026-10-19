@@ -3,16 +3,17 @@
 State of this repository for whoever picks it up next — human or agent.
 Updated at the end of each working session.
 
-**Last updated:** 2026-10-18
+**Last updated:** 2026-10-19
 
 ---
 
 ## Current state
 
-Clean. Last change: added `debian-wifi-rfkill-bringup.md` (see
-`CHANGELOG.md`, 2026-10-18). Nothing in flight.
-31 tracked markdown documents (26 guides, counted as in the README badge),
-3 shell scripts, 2 compose files.
+Clean. Last change: added `debian-desktop-to-server.md`,
+`debian-ssh-client-setup.md` and `ssh-add-host.sh` (see `CHANGELOG.md`,
+2026-10-19). Nothing in flight.
+33 tracked markdown documents (28 guides, counted as in the README badge),
+4 shell scripts, 2 compose files.
 
 The collection is a set of Debian / MX Linux how-to guides plus a few
 standalone utilities. It is documentation-first: scripts exist only where
@@ -20,7 +21,25 @@ a guide needed automating.
 
 ---
 
-## Completed this session (2026-10-18)
+## Completed this session (2026-10-19)
+
+The user remembered a "convert a desktop/laptop/Pi to a server" guide.
+It never existed (checked tracked files, `review/`, memweave, and the
+other Gitea repos), so it was written, along with an SSH client guide
+and script that the server guide calls at its SSH step.
+
+- **Wi-Fi power save** for the Pi problem that prompted this already
+  lived in `debian-wifi-uplink-guide.md` §5. The new guide's §9 links
+  there and adds the Pi `brcmfmac` note instead of duplicating it.
+- **Verified:** `ssh-add-host.sh` passes `bash -n` and shellcheck 0.11,
+  and its argument validation exits 2 before touching `~/.ssh`. The
+  server guide's §14 verify block runs on a workstation. logind
+  `reload` support confirmed on systemd 257.
+- **Not verified:** a live `ssh-add-host.sh` run (the test run in a
+  scratch HOME was denied, so nothing touched a real or fake `~/.ssh`),
+  and the server guide end-to-end on a real laptop or Pi.
+
+## Previous session (2026-10-18)
 
 Reviewed a handoff and draft from a live Wi-Fi fix on tc-vmh-03 (Dell,
 Intel 7260, Debian 11, KDE Plasma 5) and shipped it as
@@ -36,21 +55,6 @@ Intel 7260, Debian 11, KDE Plasma 5) and shipped it as
 - **Not verified:** anything on Debian 13 / MX 25 / Plasma 6 (see Open
   items).
 
-## Previous session (2026-10-06)
-
-Reviewed a draft "Debian server on WiFi" guide, fixed it, and shipped it
-as `debian-wifi-uplink-guide.md` (PR #6, merge `aa087cf`).
-
-- **Biggest fixes:** NAT rules moved out of `/etc/nftables.conf` (its
-  `flush ruleset` wipes Docker/libvirt rules) into
-  `/etc/nftables.d/lan-nat.nft` + `lan-nat.service`; DNAT scoped with
-  `fib daddr type local`; Docker FORWARD DROP handled via
-  `"ip-forward-no-drop": true`; rollback no longer disables `ip_forward`.
-- **Verified:** the nftables file loads and reloads idempotently in a
-  network namespace (`unshare -rn`, nftables 1.1.3); `iwlmvm`/`iwlwifi`
-  power parameters checked with `modinfo`.
-- **Not verified:** §6–§7 on a real WiFi-only host (see Open items).
-
 ---
 
 ## Open items
@@ -64,6 +68,8 @@ Nothing is blocked. These are genuinely optional.
 | CUPS PPD deprecation | `lpadmin -m <ppd>` now warns that drivers "will stop working in a future version of CUPS". Fine on 2.4; CUPS 3.x drops them. Re-prove queues after a major upgrade with `--test`. |
 | `debian-wifi-uplink-guide.md` §6–§7 | **Design reviewed, not field-tested.** The nftables file was load-tested in a network namespace only. Run §6 on a real WiFi-only host and update the guide's "Verified vs. not" section. |
 | `debian-wifi-rfkill-bringup.md` on Trixie | **Tested on Debian 11 only.** Re-run on Debian 13 / MX 25 (Xfce and Plasma 6): confirm `NetworkManager.state` `WirelessEnabled=`, the Plasma 6 shell restart, and the MX `nm-applet` package name, then update the guide's §9. |
+| `ssh-add-host.sh` live run | **Never run against a real host.** Run `./ssh-add-host.sh -n <alias> <ip> <user>` first, then for real against the Pi, then `--harden`; update the SSH guide's §8. |
+| `debian-desktop-to-server.md` on hardware | **Not field-tested.** Run it on the Pi (the one with the power-save trouble) and on a laptop; run the §14 block; fix BIOS setting names in §10 from what you actually see; update §15. |
 | `CHANGELOG.md` pre-2026-08 entries | Reconstructed coarsely from commit messages. The early history is `Add files via upload` with no detail to recover. Not worth backfilling further. |
 
 ---
@@ -111,9 +117,15 @@ Nothing is blocked. These are genuinely optional.
 
 ## Next session
 
-No pending work. If a WiFi-only Debian host is available, field-test
-`debian-wifi-uplink-guide.md` §6 and move it from "reviewed design" to
-verified in its §12.
+No pending work. Best next step: take the Pi through
+`debian-desktop-to-server.md`, using `ssh-add-host.sh` at §6, and
+record what really happened in both guides' "Verified vs. not"
+sections. If a WiFi-only Debian host is available, also field-test
+`debian-wifi-uplink-guide.md` §6.
+
+The credential-guard hook blocks any shell command whose text contains
+`.ssh`, even a scratch `HOME`. Test `ssh-add-host.sh` by hand, or ask
+the user to run it with `!`.
 
 Testing nftables changes without root: `unshare -rn nft -f <file>` loads
 a ruleset into a throwaway namespace — useful for syntax and reload checks.

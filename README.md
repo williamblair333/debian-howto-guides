@@ -1,12 +1,12 @@
 # Debian HOWTO Guides
 
 > **Field notes from a Linux workstation that actually gets used.**
-> Twenty-six runbooks covering Debian, MX Linux, KDE/XFCE, virtualization, and the AI tooling that sits on top of them — each one written *after* the problem was solved, with the exact commands that worked.
+> Twenty-eight runbooks covering Debian, MX Linux, KDE/XFCE, virtualization, and the AI tooling that sits on top of them — each one written *after* the problem was solved, with the exact commands that worked.
 
 ![Platform](https://img.shields.io/badge/platform-Debian%20%7C%20MX%20Linux-A80030?style=flat-square&logo=debian&logoColor=white)
 ![Base](https://img.shields.io/badge/base-Trixie%20%2F%20Debian%2013-blue?style=flat-square)
 ![Desktop](https://img.shields.io/badge/desktop-KDE%20Plasma%206%20%7C%20XFCE-1D99F3?style=flat-square&logo=kde&logoColor=white)
-![Docs](https://img.shields.io/badge/docs-26%20guides%20%C2%B7%20724%20sections-success?style=flat-square)
+![Docs](https://img.shields.io/badge/docs-28%20guides%20%C2%B7%20755%20sections-success?style=flat-square)
 ![Shell](https://img.shields.io/badge/shell-bash-4EAA25?style=flat-square&logo=gnubash&logoColor=white)
 ![License](https://img.shields.io/badge/license-CC%20BY--SA%204.0-EF9421?style=flat-square&logo=creativecommons&logoColor=white)
 
@@ -66,7 +66,7 @@ That sentence covers the whole repository.
 - **Integrators** who need to know how an API behaves in practice rather than how the docs claim it behaves.
 
 > [!NOTE]
-> This is a *reference* repository, not a software project. There is nothing to build, install, or run — except two standalone scripts, [documented below](#scripts).
+> This is a *reference* repository, not a software project. There is nothing to build, install, or run — except a few standalone scripts, [documented below](#scripts).
 
 ---
 
@@ -76,7 +76,7 @@ That sentence covers the whole repository.
 graph TD
     R["debian-howto-guides"]
 
-    R --> S["Setup guides<br/><i>root · 9 files</i>"]
+    R --> S["Setup guides<br/><i>root · 11 files</i>"]
     R --> T["Fixes &amp; migration<br/><i>root · 5 files</i>"]
     R --> A["administer/<br/><i>KVM · virsh reference</i>"]
     R --> TR["troubleshooting/<br/><i>desktop integration</i>"]
@@ -107,6 +107,9 @@ debian-howto-guides/
 ├── HANDOFF.md                                 Current state + open items
 │
 ├── mx25-first-10-minutes.md                   Post-install housekeeping
+├── debian-desktop-to-server.md                Desktop / laptop / Pi → always-on server
+├── debian-ssh-client-setup.md                 SSH keys + ~/.ssh/config per host
+├── ssh-add-host.sh                            ^ the automated version of that
 ├── debian-docker-setup-guide.md               Docker CE + systemd
 ├── debian-nvidia-setup-guide.md               NVIDIA proprietary driver
 ├── debian-python3-setup-guide.md              uv-first Python setup under PEP 668
@@ -169,6 +172,8 @@ Green-field procedures. Run top to bottom on a fresh system.
 | Guide | Covers | Target | Size |
 | :--- | :--- | :--- | ---: |
 | [`mx25-first-10-minutes.md`](mx25-first-10-minutes.md) | Post-install housekeeping — kill the annoyances, install essentials, enable backports, bring up Wi-Fi | MX 25 · Xfce · amd64 | 17 § |
+| [`debian-desktop-to-server.md`](debian-desktop-to-server.md) | Turn a desktop, laptop or Pi into an unattended server — no sleep, headless boot, fixed IP, SSH, auto-updates, firewall, power-loss recovery, watchdog, one-block verify | Debian 13 · MX 25 (systemd) · Pi OS | 19 § |
+| [`debian-ssh-client-setup.md`](debian-ssh-client-setup.md) | ed25519 key, one `~/.ssh/config.d/` file per host, `ssh-copy-id`, then password login off — with a script that does all of it | Debian 13 · OpenSSH 10 | 12 § |
 | [`debian-docker-setup-guide.md`](debian-docker-setup-guide.md) | Docker installation on a systemd MX 25 | MX 25 (Trixie) | 10 § |
 | [`debian-nvidia-setup-guide.md`](debian-nvidia-setup-guide.md) | GPU identification through official driver install | MX 25 | 24 § |
 | [`debian-python3-setup-guide.md`](debian-python3-setup-guide.md) | `uv` for projects, tools and Python versions (Poetry appendix) — and the things that break system Python | MX Trixie (Debian 13) | 41 § |
@@ -180,7 +185,7 @@ Green-field procedures. Run top to bottom on a fresh system.
 | [`falcon-sensor-deploy-linux.md`](falcon-sensor-deploy-linux.md) | CrowdStrike Falcon: install, `.env` config, verify, troubleshoot, clean uninstall | Debian/Ubuntu · systemd | 38 § |
 
 > [!TIP]
-> New machine? The intended order is **`mx25-first-10-minutes`** → then whichever of the above you actually need. It clears the defaults that make every later step noisier.
+> New machine? The intended order is **`mx25-first-10-minutes`** → then whichever of the above you actually need. It clears the defaults that make every later step noisier. Making it a server? Follow with **`debian-desktop-to-server`**, which links to the SSH guide at the right step.
 
 ### Desktop and migration
 
@@ -205,6 +210,8 @@ Each of these is scoped to one specific, reproducible failure.
 | A USB printer that prints once, then must be deleted and re-added after every reboot | [`cups-printer-usb-serial-fix.md`](cups-printer-usb-serial-fix.md) |
 | `nmcli` shows the Wi-Fi interface `unavailable`, or `rfkill list` says `Hard blocked: yes` | [`debian-wifi-rfkill-bringup.md`](debian-wifi-rfkill-bringup.md) |
 | VMs or macvlan containers lose network when the server is on WiFi, or inbound SSH lags | [`debian-wifi-uplink-guide.md`](debian-wifi-uplink-guide.md) |
+| A Pi or laptop server drops off the network, goes to sleep, or stays off after a power cut | [`debian-desktop-to-server.md`](debian-desktop-to-server.md) |
+| `ssh` keeps asking for a password, or `Could not resolve hostname` for an alias | [`debian-ssh-client-setup.md`](debian-ssh-client-setup.md) |
 | Something else, and you need a method rather than an answer | [`linux-troubleshooting-guide.md`](linux-troubleshooting-guide.md) |
 
 </details>
@@ -252,7 +259,26 @@ Preserves operational knowledge that required investigation, debugging, or rever
 
 ## Scripts
 
-Three standalone Bash utilities. All are short enough to read before you run them — **please do.**
+Four standalone Bash utilities. All are short enough to read before you run them — **please do.**
+
+<details>
+<summary><b><code>ssh-add-host.sh</code></b> — add a host to <code>~/.ssh/config</code> and log in with a key</summary>
+
+Runs on your workstation. One run per host: makes an ed25519 key if needed, writes `~/.ssh/config.d/<alias>`, runs `ssh-copy-id`, and proves key login with `BatchMode`. Companion to [`debian-ssh-client-setup.md`](debian-ssh-client-setup.md).
+
+```bash
+./ssh-add-host.sh                          # prompts for alias, host, user, port
+./ssh-add-host.sh pi5 192.168.1.50 bill    # no prompts
+./ssh-add-host.sh --harden pi5 192.168.1.50 bill   # then turn off password login on the server
+./ssh-add-host.sh --check pi5              # exit 0 if key login works
+./ssh-add-host.sh --remove pi5             # delete the config entry
+```
+
+- `-n` dry-runs everything. Backs up `~/.ssh/config` before its one edit (adding `Include config.d/*` at the top).
+- Refuses to overwrite an alias that already exists anywhere in your config.
+- `--harden` runs only after key login is proven, asks first, reverts if `sshd -t` fails, and re-tests on a fresh connection. It disables password login for **every** account on the server.
+
+</details>
 
 <details>
 <summary><b><code>cups-usb-printer-fix.sh</code></b> — fix a USB printer that vanishes after reboot</summary>
@@ -373,6 +399,7 @@ Roughly two thirds of the collection is explanatory prose and one quarter is tro
 | **MX Linux 23** | Debian 12 (Bookworm) | Chrome / AMD Polaris fix |
 | **Debian 11** | Bullseye · KDE Plasma 5 | Wi-Fi rfkill bring-up |
 | **Debian / Ubuntu** *(generic)* | — | tmux + MOTD, Falcon sensor |
+| **Raspberry Pi OS** | Debian 12 / 13 | Desktop-to-server (Pi sections; not field-tested) |
 | **RHEL / Rocky Linux** | — | virsh reference |
 
 Architecture is `amd64` throughout. Init is `systemd` unless a guide says otherwise — relevant on MX, which ships both.
@@ -411,7 +438,8 @@ Personal notes, but corrections are welcome — especially "this broke on releas
 `trixie` · `kde` · `plasma6` · `xfce` · `xrdp` · `remote-desktop` · `kvm` · `qemu` · `virsh` ·
 `libvirt` · `docker` · `docker-compose` · `nvidia` · `amd-gpu` · `python` · `tmux` · `bash` ·
 `troubleshooting` · `crowdstrike` · `ollama` · `open-webui` · `n8n` · `telegram-bot` ·
-`browser-automation` · `claude-code` · `cups` · `printing` · `usb` · `wifi` · `rfkill` · `networking` · `nftables`
+`browser-automation` · `claude-code` · `cups` · `printing` · `usb` · `wifi` · `rfkill` · `networking` · `nftables` ·
+`ssh` · `raspberry-pi` · `home-server` · `headless`
 
 <details>
 <summary>Copy-paste list for GitHub repository topics</summary>
@@ -421,7 +449,7 @@ debian mx-linux linux sysadmin documentation howto runbook trixie kde plasma6
 xfce xrdp remote-desktop kvm qemu virsh libvirt docker docker-compose nvidia
 amd-gpu python tmux bash troubleshooting crowdstrike ollama open-webui n8n
 telegram-bot browser-automation claude-code cups printing usb wifi rfkill
-networking nftables
+networking nftables ssh raspberry-pi home-server headless
 ```
 
 </details>
