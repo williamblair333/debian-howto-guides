@@ -896,6 +896,6 @@ killall plasmashell && kstart plasmashell &
 - [Dolphin SFTP Remote Access](debian-kde-dolphin-xfce.md) — Dolphin issues that show up after the switch
 - [Restoring Application Visibility in Dolphin](troubleshooting/kde-dolphin-xfce-file-association.md) — the Open With / menu-file breakage in a mixed setup
 - [XRDP Setup Guide](debian-xrdp-setup-guide.md) — the session file needs updating for Plasma
-- [MX 25 First 10 Minutes](mx25-first-10-minutes.md) — the Xfce starting point this migrates away from
+- [MX 25 First 30 Minutes](mx25-first-10-minutes.md) — the Xfce starting point this migrates away from
 
 [Back to the repository index](README.md)

@@ -376,6 +376,6 @@ Then the real test, from §10: pull the plug, plug it back in, and `ssh pi5` fro
 - [Wi-Fi won't come up](debian-wifi-rfkill-bringup.md) — rfkill and `nmcli` bring-up
 - [Docker setup](debian-docker-setup-guide.md) — the usual next step on a home server
 - [tmux + MOTD](debian-tmux-motd-setup-guide.md) — a login banner that shows server status
-- [MX 25 first 10 minutes](mx25-first-10-minutes.md) — base install cleanup before any of this
+- [MX 25 first 30 minutes](mx25-first-10-minutes.md) — base install cleanup before any of this
 
 [Back to the repository index](README.md)

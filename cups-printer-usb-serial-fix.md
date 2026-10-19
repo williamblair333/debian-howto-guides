@@ -287,7 +287,7 @@ Ruled out during the original diagnosis, so you can skip them:
 ## Related guides in this repo
 
 - [Linux Troubleshooting Instructions](linux-troubleshooting-guide.md) — the general diagnose-before-prescribing method this followed
-- [MX 25 First 10 Minutes](mx25-first-10-minutes.md) — baseline desktop setup
+- [MX 25 First 30 Minutes](mx25-first-10-minutes.md) — baseline desktop setup
 - [Chrome Freezing Fix on AMD](chrome-gpu-amd-freeze.md) — another "known-good config, wrong stored setting" fix
 
 [Back to the repository index](README.md)

@@ -13,6 +13,28 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) loosely:
 
 ---
 
+## 2026-10-19 — MX 25 first-boot guide: more steps and tools
+
+### Added
+- `mx25-first-10-minutes.md` — new §10 time, timezone and hostname;
+  §11 Timeshift snapshot before the first upgrade; §14 ufw firewall;
+  §15 SSD trim check; §16 journal size cap; §17 zram swap with zstd
+  (optional); §18 ed25519 SSH key. Verification block covers all of them.
+- §13 tool list: `git`, `plocate`, `ripgrep`, `fd-find`, `fzf`, `bat`,
+  `sysstat`, `shellcheck`, `iftop`, `nethogs`, `ethtool`, `nmap`, `zstd`,
+  `pigz`, `7zip`, plus the `fdfind`/`batcat` rename note.
+
+### Changed
+- Title is now "First 30 Minutes"; filename kept so existing links work.
+  Link text in 10 other guides updated. Update System is §12, tools §13.
+
+### Fixed
+- §3 ran `visudo` on `/etc/sudoers` and then `chmod` on a
+  `/etc/sudoers.d/nopasswd-$USER` file that was never created. Now uses
+  `visudo -f /etc/sudoers.d/nopasswd-$USER`.
+
+---
+
 ## 2026-10-19 — sshfs mounts guide and script
 
 ### Added

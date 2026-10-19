@@ -109,6 +109,6 @@ Done. That's it.
 
 - [Open WebUI with Ollama](open-webui/README.md) — a compose stack to run once Docker works
 - [NVIDIA Driver Installation](debian-nvidia-setup-guide.md) — required first for any GPU container
-- [MX 25 First 10 Minutes](mx25-first-10-minutes.md) — the post-install pass that precedes this one
+- [MX 25 First 30 Minutes](mx25-first-10-minutes.md) — the post-install pass that precedes this one
 
 [Back to the repository index](README.md)

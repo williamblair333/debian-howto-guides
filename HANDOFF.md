@@ -9,8 +9,10 @@ Updated at the end of each working session.
 
 ## Current state
 
-Clean. Last change: added `debian-sshfs-mounts.md` and
-`sshfs-add-mount.sh` (see `CHANGELOG.md`, 2026-10-19, sshfs entry).
+Clean. Last change: expanded `mx25-first-10-minutes.md` to "First 30
+Minutes" (7 new steps, 15 more tools, §3 sudoers fix; see `CHANGELOG.md`,
+2026-10-19, MX 25 entry). Package names checked with `apt-cache policy`
+on MX 25; the new steps weren't re-run on a fresh install.
 Nothing in flight.
 34 tracked markdown documents (29 guides, counted as in the README badge),
 5 shell scripts, 2 compose files.
