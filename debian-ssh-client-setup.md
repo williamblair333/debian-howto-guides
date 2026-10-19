@@ -202,5 +202,6 @@ sudo rm /etc/ssh/sshd_config.d/10-keys-only.conf && sudo systemctl reload ssh
 - [Desktop / laptop / Pi to server](debian-desktop-to-server.md) — preparing the box this connects to
 - [Server on WiFi](debian-wifi-uplink-guide.md) — power save and why inbound SSH lags on WiFi
 - [Dolphin SFTP under XFCE](debian-kde-dolphin-xfce.md) — `sftp://pi5` in a file manager uses this same config
+- [sshfs mounts](debian-sshfs-mounts.md) — the host's folder as a local one, kept mounted across logins and drops
 
 [Back to the repository index](README.md)

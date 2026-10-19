@@ -6,7 +6,7 @@
 ![Platform](https://img.shields.io/badge/platform-Debian%20%7C%20MX%20Linux-A80030?style=flat-square&logo=debian&logoColor=white)
 ![Base](https://img.shields.io/badge/base-Trixie%20%2F%20Debian%2013-blue?style=flat-square)
 ![Desktop](https://img.shields.io/badge/desktop-KDE%20Plasma%206%20%7C%20XFCE-1D99F3?style=flat-square&logo=kde&logoColor=white)
-![Docs](https://img.shields.io/badge/docs-28%20guides%20%C2%B7%20755%20sections-success?style=flat-square)
+![Docs](https://img.shields.io/badge/docs-29%20guides%20%C2%B7%20768%20sections-success?style=flat-square)
 ![Shell](https://img.shields.io/badge/shell-bash-4EAA25?style=flat-square&logo=gnubash&logoColor=white)
 ![License](https://img.shields.io/badge/license-CC%20BY--SA%204.0-EF9421?style=flat-square&logo=creativecommons&logoColor=white)
 
@@ -110,6 +110,8 @@ debian-howto-guides/
 ├── debian-desktop-to-server.md                Desktop / laptop / Pi → always-on server
 ├── debian-ssh-client-setup.md                 SSH keys + ~/.ssh/config per host
 ├── ssh-add-host.sh                            ^ the automated version of that
+├── debian-sshfs-mounts.md                     a server folder mounted locally, kept up
+├── sshfs-add-mount.sh                         ^ the automated version of that
 ├── debian-docker-setup-guide.md               Docker CE + systemd
 ├── debian-nvidia-setup-guide.md               NVIDIA proprietary driver
 ├── debian-python3-setup-guide.md              uv-first Python setup under PEP 668
@@ -174,6 +176,7 @@ Green-field procedures. Run top to bottom on a fresh system.
 | [`mx25-first-10-minutes.md`](mx25-first-10-minutes.md) | Post-install housekeeping — kill the annoyances, install essentials, enable backports, bring up Wi-Fi | MX 25 · Xfce · amd64 | 17 § |
 | [`debian-desktop-to-server.md`](debian-desktop-to-server.md) | Turn a desktop, laptop or Pi into an unattended server — no sleep, headless boot, fixed IP, SSH, auto-updates, firewall, power-loss recovery, watchdog, one-block verify | Debian 13 · MX 25 (systemd) · Pi OS | 19 § |
 | [`debian-ssh-client-setup.md`](debian-ssh-client-setup.md) | ed25519 key, one `~/.ssh/config.d/` file per host, `ssh-copy-id`, then password login off — with a script that does all of it | Debian 13 · OpenSSH 10 | 12 § |
+| [`debian-sshfs-mounts.md`](debian-sshfs-mounts.md) | Mount a server folder locally with sshfs — keepalive/reconnect options, an SFTP-only key, and a systemd user service that remounts at login or boot — with a script | Debian 13 · sshfs 3.7 · systemd | 13 § |
 | [`debian-docker-setup-guide.md`](debian-docker-setup-guide.md) | Docker installation on a systemd MX 25 | MX 25 (Trixie) | 10 § |
 | [`debian-nvidia-setup-guide.md`](debian-nvidia-setup-guide.md) | GPU identification through official driver install | MX 25 | 24 § |
 | [`debian-python3-setup-guide.md`](debian-python3-setup-guide.md) | `uv` for projects, tools and Python versions (Poetry appendix) — and the things that break system Python | MX Trixie (Debian 13) | 41 § |
@@ -212,6 +215,7 @@ Each of these is scoped to one specific, reproducible failure.
 | VMs or macvlan containers lose network when the server is on WiFi, or inbound SSH lags | [`debian-wifi-uplink-guide.md`](debian-wifi-uplink-guide.md) |
 | A Pi or laptop server drops off the network, goes to sleep, or stays off after a power cut | [`debian-desktop-to-server.md`](debian-desktop-to-server.md) |
 | `ssh` keeps asking for a password, or `Could not resolve hostname` for an alias | [`debian-ssh-client-setup.md`](debian-ssh-client-setup.md) |
+| An sshfs mount freezes `ls` or the file manager, or says `Transport endpoint is not connected` | [`debian-sshfs-mounts.md`](debian-sshfs-mounts.md) |
 | Something else, and you need a method rather than an answer | [`linux-troubleshooting-guide.md`](linux-troubleshooting-guide.md) |
 
 </details>
@@ -259,7 +263,7 @@ Preserves operational knowledge that required investigation, debugging, or rever
 
 ## Scripts
 
-Four standalone Bash utilities. All are short enough to read before you run them — **please do.**
+Five standalone Bash utilities. All are short enough to read before you run them — **please do.**
 
 <details>
 <summary><b><code>ssh-add-host.sh</code></b> — add a host to <code>~/.ssh/config</code> and log in with a key</summary>
@@ -277,6 +281,26 @@ Runs on your workstation. One run per host: makes an ed25519 key if needed, writ
 - `-n` dry-runs everything. Backs up `~/.ssh/config` before its one edit (adding `Include config.d/*` at the top).
 - Refuses to overwrite an alias that already exists anywhere in your config.
 - `--harden` runs only after key login is proven, asks first, reverts if `sshd -t` fails, and re-tests on a fresh connection. It disables password login for **every** account on the server.
+
+</details>
+
+<details>
+<summary><b><code>sshfs-add-mount.sh</code></b> — mount a server folder locally, optionally for good</summary>
+
+Runs on your workstation, on an alias `ssh-add-host.sh` already set up. One run per mount: checks SFTP login and the remote folder, mounts at `~/mnt/NAME` with reconnect and keepalives, and with `--persist` writes a systemd user service that remounts at login and after drops. Companion to [`debian-sshfs-mounts.md`](debian-sshfs-mounts.md).
+
+```bash
+./sshfs-add-mount.sh pi5                     # pi5:~ at ~/mnt/pi5
+./sshfs-add-mount.sh --ro pi5 /srv/media media  # read-only, named "media"
+./sshfs-add-mount.sh --persist pi5           # remount at every login
+./sshfs-add-mount.sh --boot nas backups      # mount at boot, before login (linger)
+./sshfs-add-mount.sh --status                # list mounts, state, service
+./sshfs-add-mount.sh --remove media          # unmount, delete service and empty folder
+```
+
+- `-n` dry-runs everything. No root needed; nothing is installed on the server.
+- Refuses to mount over a non-empty or in-use folder. `--remove` only ever uses `rmdir`: `rm -r` on a mounted folder deletes the files on the server.
+- `--persist` first proves login works with no agent or desktop session, so a passphrase key fails at setup, not silently at boot.
 
 </details>
 
@@ -439,7 +463,7 @@ Personal notes, but corrections are welcome — especially "this broke on releas
 `libvirt` · `docker` · `docker-compose` · `nvidia` · `amd-gpu` · `python` · `tmux` · `bash` ·
 `troubleshooting` · `crowdstrike` · `ollama` · `open-webui` · `n8n` · `telegram-bot` ·
 `browser-automation` · `claude-code` · `cups` · `printing` · `usb` · `wifi` · `rfkill` · `networking` · `nftables` ·
-`ssh` · `raspberry-pi` · `home-server` · `headless`
+`ssh` · `sshfs` · `systemd` · `raspberry-pi` · `home-server` · `headless`
 
 <details>
 <summary>Copy-paste list for GitHub repository topics</summary>
@@ -449,7 +473,7 @@ debian mx-linux linux sysadmin documentation howto runbook trixie kde plasma6
 xfce xrdp remote-desktop kvm qemu virsh libvirt docker docker-compose nvidia
 amd-gpu python tmux bash troubleshooting crowdstrike ollama open-webui n8n
 telegram-bot browser-automation claude-code cups printing usb wifi rfkill
-networking nftables ssh raspberry-pi home-server headless
+networking nftables ssh sshfs systemd raspberry-pi home-server headless
 ```
 
 </details>

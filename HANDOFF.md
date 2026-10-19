@@ -9,11 +9,11 @@ Updated at the end of each working session.
 
 ## Current state
 
-Clean. Last change: added `debian-desktop-to-server.md`,
-`debian-ssh-client-setup.md` and `ssh-add-host.sh` (see `CHANGELOG.md`,
-2026-10-19). Nothing in flight.
-33 tracked markdown documents (28 guides, counted as in the README badge),
-4 shell scripts, 2 compose files.
+Clean. Last change: added `debian-sshfs-mounts.md` and
+`sshfs-add-mount.sh` (see `CHANGELOG.md`, 2026-10-19, sshfs entry).
+Nothing in flight.
+34 tracked markdown documents (29 guides, counted as in the README badge),
+5 shell scripts, 2 compose files.
 
 The collection is a set of Debian / MX Linux how-to guides plus a few
 standalone utilities. It is documentation-first: scripts exist only where
@@ -21,7 +21,26 @@ a guide needed automating.
 
 ---
 
-## Completed this session (2026-10-19)
+## Completed this session (2026-10-19, second session)
+
+The user wanted a persistent alternative to repeated `scp`. Designed
+with them, then built: `sshfs-add-mount.sh` plus `debian-sshfs-mounts.md`.
+Design choices they approved: named mounts (several per host), a
+systemd **user** service for `--persist`, `--boot` = linger, no fstab.
+
+- **Verified live** against a throwaway sshd (see "Testing sshfs" under
+  Next session): mount, `--ro`, `--force`, `--check`, `--status`,
+  `--umount`, `--remove`, every refusal path; `--persist` including
+  restart after the sshfs process is killed; a key restricted to
+  `command="internal-sftp"`. shellcheck 0.11 clean.
+- **Two bugs found in testing and fixed:** a clean stop left the unit
+  `failed` (sshfs exits 1 on SIGTERM); and `ssh host true` checks would
+  have broken on the SFTP-only key the guide recommends, so checks now
+  use `sftp -b`.
+- **Not verified:** `--boot` across a real reboot (linger was already on
+  here), `--allow-other`, a real network drop with `reconnect`.
+
+## Earlier session (2026-10-19)
 
 The user remembered a "convert a desktop/laptop/Pi to a server" guide.
 It never existed (checked tracked files, `review/`, memweave, and the
@@ -69,6 +88,7 @@ Nothing is blocked. These are genuinely optional.
 | `debian-wifi-uplink-guide.md` §6–§7 | **Design reviewed, not field-tested.** The nftables file was load-tested in a network namespace only. Run §6 on a real WiFi-only host and update the guide's "Verified vs. not" section. |
 | `debian-wifi-rfkill-bringup.md` on Trixie | **Tested on Debian 11 only.** Re-run on Debian 13 / MX 25 (Xfce and Plasma 6): confirm `NetworkManager.state` `WirelessEnabled=`, the Plasma 6 shell restart, and the MX `nm-applet` package name, then update the guide's §9. |
 | `ssh-add-host.sh` live run | **Never run against a real host.** Run `./ssh-add-host.sh -n <alias> <ip> <user>` first, then for real against the Pi, then `--harden`; update the SSH guide's §8. |
+| `sshfs-add-mount.sh` on a real host | **Tested against a local throwaway sshd only.** Mount from the Pi with `--persist`, pull the network for a minute, confirm it recovers; try `--boot` across a reboot; update the guide's §9. |
 | `debian-desktop-to-server.md` on hardware | **Not field-tested.** Run it on the Pi (the one with the power-save trouble) and on a laptop; run the §14 block; fix BIOS setting names in §10 from what you actually see; update §15. |
 | `CHANGELOG.md` pre-2026-08 entries | Reconstructed coarsely from commit messages. The early history is `Add files via upload` with no detail to recover. Not worth backfilling further. |
 
@@ -126,6 +146,16 @@ sections. If a WiFi-only Debian host is available, also field-test
 The credential-guard hook blocks any shell command whose text contains
 `.ssh`, even a scratch `HOME`. Test `ssh-add-host.sh` by hand, or ask
 the user to run it with `!`.
+
+**Testing sshfs (or anything SSH) without touching `~/.ssh`:** a daemon
+`sshd` as a normal user fails here (startup-pipe reset), but
+`ProxyCommand /usr/sbin/sshd -i -f <scratch sshd_config>` spawns one
+sshd per connection and works. Put the host in a scratch `ssh_config`
+and a `bin/ssh` wrapper (`exec /usr/bin/ssh -F <cfg> "$@"`) first on
+`PATH`; sshfs and the script's `sftp -S` both pick it up. For
+`--persist`, add `-o ssh_command=<wrapper>` so the unit uses it too.
+Keep `ControlPath` under 108 bytes — the scratchpad path is too long.
+Never `pkill -f` a pattern that appears in your own command line.
 
 Testing nftables changes without root: `unshare -rn nft -f <file>` loads
 a ruleset into a throwaway namespace — useful for syntax and reload checks.
