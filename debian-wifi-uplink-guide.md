@@ -405,6 +405,7 @@ journalctl -k -b | grep -iE 'wl|iwlwifi|iwlmvm|br0'
 ## Related guides in this repo
 
 - [Wi-Fi Won't Come Up](debian-wifi-rfkill-bringup.md) — Wi-Fi not up at all? Start here
+- [Desktop / laptop / Pi to server](debian-desktop-to-server.md) — the rest of making a box run unattended; links back to §5 here
 - [Debian Docker Setup](debian-docker-setup-guide.md) — Docker install; see §6.5 here before routing through a Docker host
 - [KVM/QEMU with virt-manager](debian-virtman-setup-guide.md) — the VMs you'd attach to `br0`
 - [virsh reference](administer/virsh-reference-guide.md) — network and interface commands for libvirt
