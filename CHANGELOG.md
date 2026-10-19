@@ -13,6 +13,27 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) loosely:
 
 ---
 
+## 2026-10-19 — sshfs mounts guide and script
+
+### Added
+- `sshfs-add-mount.sh` — mounts `ALIAS:PATH` at `~/mnt/NAME` with
+  `reconnect`, 15 s keepalives, `BatchMode`, `ControlPath=none` and
+  `idmap=user`; several named mounts per host. `--persist` writes a
+  systemd user service (`Restart=always`, `SuccessExitStatus=1` because
+  sshfs exits 1 on a clean stop); `--boot` adds linger. Also `--ro`,
+  `--allow-other` (checks `/etc/fuse.conf`), `-o`, `--force`,
+  `--umount`, `--remove` (`rmdir` only, never `rm -r`), `--check`,
+  `--status`, `-n`. Login and folder checks go over SFTP, so they work
+  with a key restricted to `command="internal-sftp"`.
+- `debian-sshfs-mounts.md` — mounting by hand, the options and why, an
+  SFTP-only key for unattended mounts, the user service line by line,
+  linger, why not fstab, safe unmount, troubleshooting.
+
+### Changed
+- `README.md` — registered the guide and script; badge 29 guides ·
+  768 sections; tags `sshfs`, `systemd`.
+- `debian-ssh-client-setup.md` — related-guides link to the sshfs guide.
+
 ## 2026-10-19 — Desktop-to-server and SSH client guides
 
 ### Added
