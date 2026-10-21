@@ -13,6 +13,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) loosely:
 
 ---
 
+## 2026-10-21 — sshfs-add-mount.sh takes a path as the mount point
+
+### Changed
+- `sshfs-add-mount.sh` 1.1.0: a third argument containing `/` is the
+  mount point, and NAME becomes its last folder. Before, it failed the
+  name check (`[FAIL] Name '/home/bill/mnt/dma64' must be letters…`).
+  Giving both `-m` and a path is refused. Help text and
+  `debian-sshfs-mounts.md` §3 updated.
+
 ## 2026-10-19 — MX 25 first-boot guide: more steps and tools
 
 ### Added

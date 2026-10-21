@@ -3,17 +3,17 @@
 State of this repository for whoever picks it up next — human or agent.
 Updated at the end of each working session.
 
-**Last updated:** 2026-10-19
+**Last updated:** 2026-10-21
 
 ---
 
 ## Current state
 
-Clean. Last change: expanded `mx25-first-10-minutes.md` to "First 30
-Minutes" (7 new steps, 15 more tools, §3 sudoers fix; see `CHANGELOG.md`,
-2026-10-19, MX 25 entry). Package names checked with `apt-cache policy`
-on MX 25; the new steps weren't re-run on a fresh install.
-Nothing in flight.
+Clean. Last change: `sshfs-add-mount.sh` 1.1.0 accepts a path as its
+third argument and uses it as the mount point (see `CHANGELOG.md`,
+2026-10-21). Argument parsing tested with a fake host; no real mount
+made with the new form yet, and shellcheck wasn't run (not installed
+here). Nothing in flight.
 34 tracked markdown documents (29 guides, counted as in the README badge),
 5 shell scripts, 2 compose files.
 
