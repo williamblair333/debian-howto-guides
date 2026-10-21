@@ -292,6 +292,7 @@ Runs on your workstation, on an alias `ssh-add-host.sh` already set up. One run 
 ```bash
 ./sshfs-add-mount.sh pi5                     # pi5:~ at ~/mnt/pi5
 ./sshfs-add-mount.sh --ro pi5 /srv/media media  # read-only, named "media"
+./sshfs-add-mount.sh pi5 /srv/media /mnt/media  # mounted at /mnt/media
 ./sshfs-add-mount.sh --persist pi5           # remount at every login
 ./sshfs-add-mount.sh --boot nas backups      # mount at boot, before login (linger)
 ./sshfs-add-mount.sh --status                # list mounts, state, service
