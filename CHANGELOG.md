@@ -20,7 +20,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) loosely:
   mount point, and NAME becomes its last folder. Before, it failed the
   name check (`[FAIL] Name '/home/bill/mnt/dma64' must be letters…`).
   Giving both `-m` and a path is refused. Help text and
-  `debian-sshfs-mounts.md` §3 updated.
+  `debian-sshfs-mounts.md` §3 and the README example list updated.
+  Verified with a real mount on tc-vmh-03.
 
 ## 2026-10-19 — MX 25 first-boot guide: more steps and tools
 

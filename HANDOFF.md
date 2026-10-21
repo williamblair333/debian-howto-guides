@@ -11,9 +11,9 @@ Updated at the end of each working session.
 
 Clean. Last change: `sshfs-add-mount.sh` 1.1.0 accepts a path as its
 third argument and uses it as the mount point (see `CHANGELOG.md`,
-2026-10-21). Argument parsing tested with a fake host; no real mount
-made with the new form yet, and shellcheck wasn't run (not installed
-here). Nothing in flight.
+2026-10-21). Verified live on tc-vmh-03:
+`--ro --force dma64 /opt/proj ~/mnt/dma64` mounted. shellcheck wasn't
+run (not installed here). Nothing in flight.
 34 tracked markdown documents (29 guides, counted as in the README badge),
 5 shell scripts, 2 compose files.
 
