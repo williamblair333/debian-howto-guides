@@ -60,7 +60,7 @@ fusermount3 -u ~/mnt/pi5                     # unmount
 
 ## 3. Mount names and folders
 
-The script mounts at `~/mnt/NAME`. NAME defaults to the alias for a home mount, or `ALIAS-<last folder>` otherwise (`pi5 /srv/media` → `pi5-media`). Pass a third argument to choose it, or `-m DIR` for a different folder entirely.
+The script mounts at `~/mnt/NAME`. NAME defaults to the alias for a home mount, or `ALIAS-<last folder>` otherwise (`pi5 /srv/media` → `pi5-media`). Pass a third argument to choose it. To mount somewhere else, pass a path as the third argument (`pi5 /srv/media /mnt/media` mounts at `/mnt/media`, named `media`) or use `-m DIR`.
 
 Several mounts per host are fine — each has its own name, folder and (with `--persist`) service.
 

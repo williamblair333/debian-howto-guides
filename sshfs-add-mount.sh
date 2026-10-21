@@ -13,7 +13,7 @@
 
 set -euo pipefail
 
-VERSION="1.0.0"
+VERSION="1.1.0"
 PROG="$(basename "$0")"
 CONF_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 STATE_DIR="$CONF_HOME/sshfs-mounts"
@@ -57,7 +57,9 @@ Arguments:
   ALIAS                Host alias from ~/.ssh/config
   REMOTE_PATH          Folder on the host; relative paths start in your
                        home there (default: your home)
-  NAME                 Mount name (default: ALIAS, or ALIAS-<last folder>)
+  NAME                 Mount name (default: ALIAS, or ALIAS-<last folder>).
+                       A path here (anything with a /) is the mount point,
+                       and NAME is its last folder
 
 Options:
   -m, --mountpoint DIR Mount here instead of ~/mnt/NAME
@@ -82,6 +84,7 @@ Options:
 Examples:
   $PROG pi5                              # pi5:~ at ~/mnt/pi5
   $PROG --ro pi5 /srv/media media        # pi5:/srv/media at ~/mnt/media
+  $PROG pi5 /srv/media /mnt/media        # pi5:/srv/media at /mnt/media
   $PROG --boot nas backups               # nas:~/backups, mounted at boot
   $PROG --check media
 EOF
@@ -339,6 +342,13 @@ EOF
 cmd_add() {
     local alias="${POSITIONAL[0]:-}" remote="${POSITIONAL[1]:-}" name="${POSITIONAL[2]:-}"
     local mp opts i
+
+    # A path where NAME goes means "mount it here": NAME becomes its last folder.
+    if [[ "$name" == */* ]]; then
+        [[ -z "$MOUNTPOINT" ]] || die "Give the mount point once: either -m DIR or a path as NAME"
+        MOUNTPOINT="$name"
+        name="$(basename -- "$name")"
+    fi
 
     [[ -n "$alias" ]] || ask alias "Host alias (from ~/.ssh/config)"
     if [[ ${#POSITIONAL[@]} -lt 2 ]]; then
